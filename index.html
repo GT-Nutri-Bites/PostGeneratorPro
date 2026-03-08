@@ -242,16 +242,16 @@
   }
   .post-img-glow {
     position: absolute;
-    width: 55%;
-    padding-bottom: 55%;
+    width: 65%;
+    padding-bottom: 65%;
     border-radius: 50%;
     filter: blur(40px);
     opacity: 0.4;
     background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 70%);
   }
   .post-img {
-    width: clamp(130px, 38%, 220px);
-    height: clamp(130px, 38%, 220px);
+    width: clamp(200px, 55%, 320px);
+    height: clamp(200px, 55%, 320px);
     object-fit: contain;
     position: relative;
     z-index: 2;
@@ -805,6 +805,35 @@ function generateQR(url) {
 }
 
 // ===========================
+// BACKGROUND REMOVAL (Cloudinary)
+// ===========================
+const bgRemovalCache = {};
+
+function getBackgroundRemovedUrl(url) {
+  return url.replace('/upload/', '/upload/e_background_removal/');
+}
+
+function tryLoadBgRemovedImage(originalUrl) {
+  // Skip if already tested (avoids retrying failed removals)
+  if (bgRemovalCache[originalUrl] !== undefined) return;
+  const bgRemovedUrl = getBackgroundRemovedUrl(originalUrl);
+  const testImg = new Image();
+  testImg.crossOrigin = 'anonymous';
+  testImg.onload = function() {
+    bgRemovalCache[originalUrl] = bgRemovedUrl;
+    // Only update the post image if it still matches the current product
+    const postImg = document.querySelector('.post-img');
+    if (postImg && postImg.dataset.original === originalUrl) {
+      postImg.src = bgRemovedUrl;
+    }
+  };
+  testImg.onerror = function() {
+    bgRemovalCache[originalUrl] = originalUrl;
+  };
+  testImg.src = bgRemovedUrl;
+}
+
+// ===========================
 // RENDER POST
 // ===========================
 async function renderPost() {
@@ -873,7 +902,7 @@ async function renderPost() {
     <!-- Image zone -->
     <div class="post-img-zone">
       <div class="post-img-glow"></div>
-      <img class="post-img" src="${p.image}" crossorigin="anonymous" alt="${p.name}">
+      <img class="post-img" src="${bgRemovalCache[p.image] || p.image}" data-original="${p.image}" crossorigin="anonymous" alt="${p.name}">
     </div>
 
     <!-- Info -->
@@ -941,6 +970,9 @@ async function renderPost() {
 
   // Update caption
   updateCaption(p, price, w, website, company);
+
+  // Try background removal in background (non-blocking)
+  tryLoadBgRemovedImage(p.image);
 }
 
 // ===========================
