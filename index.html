@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NutriNuts — Social Post Generator</title>
+<title>GT Nutri Bites — Social Post Generator</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -234,11 +234,12 @@
   /* Product image */
   .post-img-zone {
     flex: 1;
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    padding: 50px 20px 0;
+    padding: 44px 20px 0;
   }
   .post-img-glow {
     position: absolute;
@@ -250,8 +251,8 @@
     background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 70%);
   }
   .post-img {
-    width: clamp(200px, 55%, 320px);
-    height: clamp(200px, 55%, 320px);
+    width: clamp(180px, 50%, 300px);
+    height: clamp(180px, 50%, 300px);
     object-fit: contain;
     position: relative;
     z-index: 2;
@@ -282,9 +283,10 @@
 
   /* Bottom info area */
   .post-info {
-    padding: 10px 18px 14px;
+    padding: 10px 18px 38px;
     position: relative;
     z-index: 5;
+    flex-shrink: 0;
   }
   .post-divider {
     height: 1px;
@@ -582,7 +584,7 @@
 <!-- Header -->
 <div class="header-gradient px-6 py-4 flex items-center justify-between">
   <div>
-    <div style="font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:0.1em;color:#FDE68A">NutriNuts</div>
+    <div style="font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:0.1em;color:#FDE68A">GT Nutri Bites</div>
     <div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.12em;margin-top:-2px">SOCIAL POST GENERATOR</div>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
@@ -601,9 +603,9 @@
     <!-- Company Settings -->
     <div class="ctrl-section">
       <div class="ctrl-label">🏪 Company Settings</div>
-      <input class="ctrl-input" id="companyName" type="text" placeholder="Company Name" value="NutriNuts Ceylon" style="margin-bottom:8px">
-      <input class="ctrl-input" id="websiteUrl" type="text" placeholder="Website URL" value="www.nutrinuts.lk">
-      <input class="ctrl-input" id="tagline" type="text" placeholder="Tagline (optional)" value="Nature's Finest Nuts & Seeds" style="margin-top:8px">
+      <input class="ctrl-input" id="companyName" type="text" placeholder="Company Name" value="GT Nutri Bites" style="margin-bottom:8px">
+      <input class="ctrl-input" id="websiteUrl" type="text" placeholder="Website URL" value="gt-nutri-bites.github.io">
+      <input class="ctrl-input" id="tagline" type="text" placeholder="Tagline (optional)" value="Fresh. Nutritious. Delicious." style="margin-top:8px">
     </div>
 
     <!-- Template -->
@@ -790,7 +792,7 @@ function generateQR(url) {
     container.appendChild(div);
     try {
       new QRCode(div, {
-        text: url || 'https://nutrinuts.lk',
+        text: url || 'https://gt-nutri-bites.github.io',
         width: 80, height: 80,
         colorDark: '#000', colorLight: '#fff',
         correctLevel: QRCode.CorrectLevel.M
@@ -840,8 +842,8 @@ async function renderPost() {
   const p = state.product;
   const w = state.weight;
   const tmpl = state.tmpl;
-  const company = document.getElementById('companyName').value || 'NutriNuts';
-  const website = document.getElementById('websiteUrl').value || 'www.nutrinuts.lk';
+  const company = document.getElementById('companyName').value || 'GT Nutri Bites';
+  const website = document.getElementById('websiteUrl').value || 'gt-nutri-bites.github.io';
   const tagline = document.getElementById('tagline').value || '';
   const showNutrition = document.getElementById('showNutrition').checked;
   const showBenefits = document.getElementById('showBenefits').checked;
