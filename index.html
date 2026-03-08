@@ -899,7 +899,7 @@ async function renderPost() {
 
     <!-- Badge float -->
     ${p.badge ? `<div class="post-badge-float" style="background:${bStyle.bg};color:${bStyle.color}">
-      <span style="font-size:inherit">${p.badge.replace(' ','<br>')}</span>
+      <span style="font-size:inherit">${p.badge.replaceAll(' ','<br>')}</span>
     </div>` : ''}
 
     <!-- Image zone -->
