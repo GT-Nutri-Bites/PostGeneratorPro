@@ -814,12 +814,14 @@ function getBackgroundRemovedUrl(url) {
 }
 
 function tryLoadBgRemovedImage(originalUrl) {
+  // Skip if already tested (avoids retrying failed removals)
   if (bgRemovalCache[originalUrl] !== undefined) return;
   const bgRemovedUrl = getBackgroundRemovedUrl(originalUrl);
   const testImg = new Image();
   testImg.crossOrigin = 'anonymous';
   testImg.onload = function() {
     bgRemovalCache[originalUrl] = bgRemovedUrl;
+    // Only update the post image if it still matches the current product
     const postImg = document.querySelector('.post-img');
     if (postImg && postImg.dataset.original === originalUrl) {
       postImg.src = bgRemovedUrl;
