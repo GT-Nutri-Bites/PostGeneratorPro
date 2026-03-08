@@ -1,0 +1,599 @@
+{
+  "heroImage": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990983/All_Nuts_and_Seeds-1_z4zzpj.webp",
+  "weightOptions": [
+    "100g",
+    "250g",
+    "500g",
+    "750g",
+    "1kg"
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Premium California Almonds",
+      "category": "Organic Almonds",
+      "type": "nuts",
+      "price": 438,
+      "oldPrice": 498,
+      "weight": "100g",
+      "weightVariants": {
+        "100g": {
+          "price": 438,
+          "oldPrice": 498
+        },
+        "250g": {
+          "price": 1080,
+          "oldPrice": 1230
+        },
+        "500g": {
+          "price": 2142,
+          "oldPrice": 2442
+        },
+        "750g": {
+          "price": 3200,
+          "oldPrice": 3650
+        },
+        "1kg": {
+          "price": 4260,
+          "oldPrice": 4860
+        },
+        "2kg": {
+          "price": 7000,
+          "oldPrice": 8000
+        }
+      },
+      "badge": "BEST SELLER",
+      "badgeColor": "bg-green-700",
+      "description": "Raw, unsalted, and packed with nutrients",
+      "fullDescription": "Our Premium California Almonds are sourced directly from sustainable farms in California. These raw, unsalted almonds are carefully selected for their superior quality and freshness.",
+      "benefits": [
+        "High in Vitamin E",
+        "Rich in healthy fats",
+        "Good source of protein",
+        "Contains magnesium and fiber"
+      ],
+      "nutrition": {
+        "calories": "170 per 28g",
+        "protein": "6g",
+        "fat": "15g",
+        "carbs": "6g",
+        "fiber": "3.5g"
+      },
+      "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990975/Almond-1_ef2fsx.webp",
+      "images": [
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990975/Almond-1_ef2fsx.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990971/Almond-2_eoj8sl.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990973/Almond-3_mqe4kz.webp"
+      ],
+      "emoji": "🥜",
+      "useEmoji": false,
+      "packagingType": "zipLockBag"
+    },
+    {
+      "id": 2,
+      "name": "Premium Pistachios",
+      "category": "Organic Nuts",
+      "type": "nuts",
+      "price": 678,
+      "oldPrice": 738,
+      "weight": "100g",
+      "weightVariants": {
+        "100g": {
+          "price": 678,
+          "oldPrice": 738
+        },
+        "250g": {
+          "price": 1680,
+          "oldPrice": 1830
+        },
+        "500g": {
+          "price": 3342,
+          "oldPrice": 3642
+        },
+        "750g": {
+          "price": 5000,
+          "oldPrice": 5450
+        },
+        "1kg": {
+          "price": 6660,
+          "oldPrice": 7260
+        },
+        "2kg": {
+          "price": 11000,
+          "oldPrice": 12000
+        }
+      },
+      "badge": "PREMIUM",
+      "badgeColor": "bg-green-700",
+      "description": "Rich, flavorful & naturally nutritious",
+      "fullDescription": "Our Premium Pistachios are carefully sourced and selected for their superior quality. These delicious nuts are packed with protein, fiber, and essential nutrients.",
+      "benefits": [
+        "High in protein and fiber",
+        "Rich in antioxidants",
+        "Supports heart health",
+        "Good source of vitamin B6"
+      ],
+      "nutrition": {
+        "calories": "159 per 28g",
+        "protein": "6g",
+        "fat": "13g",
+        "carbs": "8g",
+        "fiber": "3g"
+      },
+      "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990953/Pistachio-1_f129ja.webp",
+      "images": [
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990953/Pistachio-1_f129ja.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990951/Pistachio-2_nut35f.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990951/Pistachio-3_xcn1kf.webp"
+      ],
+      "emoji": "🥜",
+      "useEmoji": false,
+      "packagingType": "zipLockBag"
+    },
+    {
+      "id": 5,
+      "name": "Sunflower Seeds (Without Shell)",
+      "category": "Premium Seeds",
+      "type": "seeds",
+      "price": 408,
+      "oldPrice": 498,
+      "weight": "100g",
+      "weightVariants": {
+        "100g": {
+          "price": 408,
+          "oldPrice": 498
+        },
+        "250g": {
+          "price": 1006,
+          "oldPrice": 1230
+        },
+        "500g": {
+          "price": 1992,
+          "oldPrice": 2442
+        },
+        "750g": {
+          "price": 2976,
+          "oldPrice": 3650
+        },
+        "1kg": {
+          "price": 3960,
+          "oldPrice": 4860
+        },
+        "2kg": {
+          "price": 6500,
+          "oldPrice": 8000
+        }
+      },
+      "badge": null,
+      "badgeColor": null,
+      "description": "Roasted & lightly salted",
+      "fullDescription": "Our premium sunflower seeds are lightly roasted and salted to perfection.",
+      "benefits": [
+        "High in Vitamin E",
+        "Rich in selenium",
+        "Anti-inflammatory properties",
+        "Supports immune health"
+      ],
+      "nutrition": {
+        "calories": "165 per 28g",
+        "protein": "5.5g",
+        "fat": "14g",
+        "carbs": "7g",
+        "fiber": "3g"
+      },
+      "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990949/Sunflower_Seeds-1_jow1jp.webp",
+      "images": [
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990949/Sunflower_Seeds-1_jow1jp.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990947/Sunflower_Seeds-2_nk4wm7.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990947/Sunflower_Seeds-3_o3fv5d.webp"
+      ],
+      "emoji": "🌻",
+      "useEmoji": false
+    },
+    {
+      "id": 6,
+      "name": "Sunflower Seeds (With Shell)",
+      "category": "Premium Seeds",
+      "type": "seeds",
+      "price": 408,
+      "oldPrice": 498,
+      "weight": "100g",
+      "weightVariants": {
+        "100g": {
+          "price": 408,
+          "oldPrice": 498
+        },
+        "250g": {
+          "price": 1006,
+          "oldPrice": 1230
+        },
+        "500g": {
+          "price": 1992,
+          "oldPrice": 2442
+        },
+        "750g": {
+          "price": 2976,
+          "oldPrice": 3650
+        },
+        "1kg": {
+          "price": 3960,
+          "oldPrice": 4860
+        },
+        "2kg": {
+          "price": 6500,
+          "oldPrice": 8000
+        }
+      },
+      "badge": null,
+      "badgeColor": null,
+      "description": "Crunchy & naturally wholesome with shell",
+      "fullDescription": "Our premium sunflower seeds with shell offer a satisfying crunch and are packed with essential nutrients. Perfect for snacking on the go.",
+      "benefits": [
+        "High in Vitamin E",
+        "Rich in selenium",
+        "Natural source of healthy fats",
+        "Fun and satisfying to eat"
+      ],
+      "nutrition": {
+        "calories": "163 per 28g",
+        "protein": "5g",
+        "fat": "14g",
+        "carbs": "7g",
+        "fiber": "3g"
+      },
+      "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990970/Sunflower_Seeds_With_Shell_-1_vnslyp.webp",
+      "images": [
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990970/Sunflower_Seeds_With_Shell_-1_vnslyp.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990948/Sunflower_Seeds_With_Shell_-2_jry7it.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990977/Sunflower_Seeds_With_Shell_-3_znsjvy.webp"
+      ],
+      "emoji": "🌻",
+      "useEmoji": false,
+      "packagingType": "zipLockBag"
+    },
+    {
+      "id": 7,
+      "name": "Pumpkin Seeds",
+      "category": "Superfood Seeds",
+      "type": "seeds",
+      "price": 408,
+      "oldPrice": 498,
+      "weight": "100g",
+      "weightVariants": {
+        "100g": {
+          "price": 408,
+          "oldPrice": 498
+        },
+        "250g": {
+          "price": 1006,
+          "oldPrice": 1230
+        },
+        "500g": {
+          "price": 1992,
+          "oldPrice": 2442
+        },
+        "750g": {
+          "price": 2976,
+          "oldPrice": 3650
+        },
+        "1kg": {
+          "price": 3960,
+          "oldPrice": 4860
+        },
+        "2kg": {
+          "price": 6500,
+          "oldPrice": 8000
+        }
+      },
+      "badge": null,
+      "badgeColor": null,
+      "description": "High in zinc & magnesium",
+      "fullDescription": "Our premium pumpkin seeds are a nutritional powerhouse.",
+      "benefits": [
+        "High in zinc and magnesium",
+        "Supports prostate health",
+        "Rich in antioxidants",
+        "May improve sleep quality"
+      ],
+      "nutrition": {
+        "calories": "151 per 28g",
+        "protein": "7g",
+        "fat": "13g",
+        "carbs": "5g",
+        "fiber": "1.7g"
+      },
+      "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990954/Pumpkin_Seeds-1_kah37m.webp",
+      "images": [
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990954/Pumpkin_Seeds-1_kah37m.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990948/Pumpkin_Seeds-2_kb8qcm.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990948/Pumpkin_Seeds-3_gvwqhx.webp"
+      ],
+      "emoji": "🎃",
+      "useEmoji": false
+    },
+    {
+      "id": 8,
+      "name": "Mix Nuts, Seeds & Dried Fruits",
+      "category": "Premium Mix",
+      "type": "mix",
+      "price": 558,
+      "oldPrice": 618,
+      "weight": "100g",
+      "weightVariants": {
+        "100g": {
+          "price": 558,
+          "oldPrice": 618
+        },
+        "250g": {
+          "price": 1380,
+          "oldPrice": 1530
+        },
+        "500g": {
+          "price": 2742,
+          "oldPrice": 3042
+        },
+        "750g": {
+          "price": 4100,
+          "oldPrice": 4550
+        },
+        "1kg": {
+          "price": 5460,
+          "oldPrice": 6060
+        },
+        "2kg": {
+          "price": 9000,
+          "oldPrice": 10000
+        }
+      },
+      "badge": "ORGANIC",
+      "badgeColor": "bg-green-600",
+      "description": "Almonds, cashews & pistachios",
+      "fullDescription": "Our Deluxe Nut Mix features a premium blend of organic almonds, cashews, and pistachios.",
+      "benefits": [
+        "Variety of nutrients",
+        "Premium organic quality",
+        "Heart-healthy fats",
+        "Perfect for entertaining"
+      ],
+      "nutrition": {
+        "calories": "170 per 28g",
+        "protein": "5.5g",
+        "fat": "15g",
+        "carbs": "7g",
+        "fiber": "2.5g"
+      },
+      "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Mixed_Nuts_and_Seeds-1_hwjitv.webp",
+      "images": [
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Mixed_Nuts_and_Seeds-1_hwjitv.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990956/Mixed_Nuts_and_Seeds-_peqtzh.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990953/Mixed_Nuts_and_Seeds-3_mbkydj.webp"
+      ],
+      "emoji": "🥗",
+      "useEmoji": false,
+      "packagingType": "zipLockBag"
+    },
+    {
+      "id": 9,
+      "name": "Black Raisins",
+      "category": "Dried Fruits",
+      "type": "dried_fruits",
+      "price": 498,
+      "oldPrice": 558,
+      "weight": "100g",
+      "weightVariants": {
+        "100g": {
+          "price": 498,
+          "oldPrice": 558
+        },
+        "250g": {
+          "price": 1230,
+          "oldPrice": 1380
+        },
+        "500g": {
+          "price": 2442,
+          "oldPrice": 2742
+        },
+        "750g": {
+          "price": 3650,
+          "oldPrice": 4100
+        },
+        "1kg": {
+          "price": 4860,
+          "oldPrice": 5460
+        },
+        "2kg": {
+          "price": 8000,
+          "oldPrice": 9000
+        }
+      },
+      "badge": "NEW",
+      "badgeColor": "bg-amber-500",
+      "description": "Sweet, juicy & packed with iron",
+      "fullDescription": "Our premium Black Raisins are naturally dried to preserve their rich, sweet flavor. They are an excellent source of iron, fiber, and antioxidants.",
+      "benefits": [
+        "Rich in iron",
+        "High in antioxidants",
+        "Natural source of energy",
+        "Supports digestive health"
+      ],
+      "nutrition": {
+        "calories": "299 per 100g",
+        "protein": "3.1g",
+        "fat": "0.5g",
+        "carbs": "79g",
+        "fiber": "3.7g"
+      },
+      "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990966/Black_Rasins-1_chupha.webp",
+      "images": [
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990966/Black_Rasins-1_chupha.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990985/Black_Rasins-2_csvk7b.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990972/Black_Rasins-3_xgx67u.webp"
+      ],
+      "emoji": "🍇",
+      "useEmoji": false,
+      "packagingType": "zipLockBag"
+    },
+    {
+      "id": 11,
+      "name": "Premium Dried Fruits",
+      "category": "Dried Fruits",
+      "type": "dried_fruits",
+      "price": 618,
+      "oldPrice": 678,
+      "weight": "100g",
+      "weightVariants": {
+        "100g": {
+          "price": 618,
+          "oldPrice": 678
+        },
+        "250g": {
+          "price": 1530,
+          "oldPrice": 1680
+        },
+        "500g": {
+          "price": 3042,
+          "oldPrice": 3342
+        },
+        "750g": {
+          "price": 4550,
+          "oldPrice": 5000
+        },
+        "1kg": {
+          "price": 6060,
+          "oldPrice": 6660
+        },
+        "2kg": {
+          "price": 10000,
+          "oldPrice": 11000
+        }
+      },
+      "badge": "NEW",
+      "badgeColor": "bg-amber-500",
+      "description": "A wholesome mix of nature's finest dried fruits",
+      "fullDescription": "Our Premium Dried Fruits collection features a carefully curated selection of the finest dried fruits. Each piece is naturally dried to retain its nutrients and flavor, making it the perfect healthy snack.",
+      "benefits": [
+        "Rich in natural vitamins",
+        "High in dietary fiber",
+        "Excellent source of energy",
+        "Packed with essential minerals"
+      ],
+      "nutrition": {
+        "calories": "280 per 100g",
+        "protein": "3g",
+        "fat": "0.5g",
+        "carbs": "68g",
+        "fiber": "5g"
+      },
+      "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990959/Dried_Fruits-1_tgur8j.webp",
+      "images": [
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990959/Dried_Fruits-1_tgur8j.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990958/Dried_Fruits-2_tm5vi6.webp",
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990963/Dried_Fruits-3_utrojm.webp"
+      ],
+      "emoji": "🍎",
+      "useEmoji": false,
+      "packagingType": "zipLockBag"
+    },
+    {
+      "id": 12,
+      "name": "Golden Raisins",
+      "category": "Dried Fruits",
+      "type": "dried_fruits",
+      "price": 618,
+      "oldPrice": 678,
+      "weight": "100g",
+      "weightVariants": {
+        "100g": {
+          "price": 618,
+          "oldPrice": 678
+        },
+        "250g": {
+          "price": 1530,
+          "oldPrice": 1680
+        },
+        "500g": {
+          "price": 3042,
+          "oldPrice": 3342
+        },
+        "750g": {
+          "price": 4550,
+          "oldPrice": 5000
+        },
+        "1kg": {
+          "price": 6060,
+          "oldPrice": 6660
+        },
+        "2kg": {
+          "price": 10000,
+          "oldPrice": 11000
+        }
+      },
+      "badge": "NEW",
+      "badgeColor": "bg-amber-500",
+      "description": "Light, sweet & naturally golden",
+      "fullDescription": "Our Golden Raisins are naturally sun-dried to achieve their beautiful golden color. They offer a lighter, sweeter taste compared to regular raisins and are rich in essential nutrients.",
+      "benefits": [
+        "Rich in antioxidants",
+        "Good source of potassium",
+        "Natural energy booster",
+        "Supports bone health"
+      ],
+      "nutrition": {
+        "calories": "302 per 100g",
+        "protein": "3.4g",
+        "fat": "0.5g",
+        "carbs": "80g",
+        "fiber": "3.7g"
+      },
+      "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Golden_Rasins-1_qlg2mk.webp",
+      "images": [
+        "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Golden_Rasins-1_qlg2mk.webp"
+      ],
+      "emoji": "🍇",
+      "useEmoji": false,
+      "packagingType": "zipLockBag"
+    }
+  ],
+  "iconColors": {
+    "amber": "text-amber-600",
+    "green": "text-green-600",
+    "orange": "text-orange-600",
+    "purple": "text-purple-600",
+    "yellow": "text-yellow-700",
+    "red": "text-red-700",
+    "lime": "text-lime-700",
+    "pink": "text-pink-700"
+  },
+  "packagingCosts": {
+    "glassBottle": {
+      "100g": 120,
+      "250g": 180,
+      "500g": 250,
+      "750g": 300,
+      "1kg": 350,
+      "2kg": 650
+    },
+    "plasticBottle": {
+      "100g": 60,
+      "250g": 90,
+      "500g": 130,
+      "750g": 155,
+      "1kg": 180,
+      "2kg": 340
+    },
+    "zipLockBag": {
+      "100g": 15,
+      "250g": 25,
+      "500g": 35,
+      "750g": 42,
+      "1kg": 50,
+      "2kg": 95
+    }
+  },
+  "deliveryCharges": {
+    "colombo": 350,
+    "suburban": 400,
+    "other": 450
+  },
+  "profitMargin": 20
+}
