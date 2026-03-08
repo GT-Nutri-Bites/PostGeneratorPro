@@ -229,6 +229,9 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Product image */
@@ -320,6 +323,9 @@
     padding: 3px 10px;
     border-radius: 99px;
     font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .post-bottom-row {
@@ -353,6 +359,9 @@
     font-weight: 700;
     color: #fff;
     letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .post-qr-col {
@@ -386,6 +395,10 @@
   .post-nut-item {
     flex: 1;
     padding: 4px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     border-right: 1px solid rgba(255,255,255,0.1);
   }
@@ -394,6 +407,14 @@
     font-family: 'Bebas Neue', cursive;
     font-size: clamp(11px, 2.2vw, 16px);
     color: #fff;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+  }
+  .post-nut-unit {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7em;
+    font-weight: 500;
   }
   .post-nut-key {
     font-size: clamp(7px, 1.1vw, 9px);
@@ -724,6 +745,15 @@ let state = {
   qrDataUrl: '',
 };
 
+// Format nutrition value: separate number from unit so "g" renders in a regular font (not Bebas Neue which is all-caps)
+function formatNutVal(val) {
+  const match = val.match(/^([\d.]+)\s*(.*)$/);
+  if (match && match[2]) {
+    return `${match[1]}<span class="post-nut-unit">${match[2]}</span>`;
+  }
+  return val;
+}
+
 // ===========================
 // BUILD PRODUCT LIST
 // ===========================
@@ -919,19 +949,19 @@ async function renderPost() {
           <div class="post-nut-key">Kcal</div>
         </div>
         <div class="post-nut-item">
-          <div class="post-nut-val">${p.nutrition.protein}</div>
+          <div class="post-nut-val">${formatNutVal(p.nutrition.protein)}</div>
           <div class="post-nut-key">Protein</div>
         </div>
         <div class="post-nut-item">
-          <div class="post-nut-val">${p.nutrition.fat}</div>
+          <div class="post-nut-val">${formatNutVal(p.nutrition.fat)}</div>
           <div class="post-nut-key">Fat</div>
         </div>
         <div class="post-nut-item">
-          <div class="post-nut-val">${p.nutrition.carbs}</div>
+          <div class="post-nut-val">${formatNutVal(p.nutrition.carbs)}</div>
           <div class="post-nut-key">Carbs</div>
         </div>
         <div class="post-nut-item">
-          <div class="post-nut-val">${p.nutrition.fiber}</div>
+          <div class="post-nut-val">${formatNutVal(p.nutrition.fiber)}</div>
           <div class="post-nut-key">Fiber</div>
         </div>
       </div>` : ''}
