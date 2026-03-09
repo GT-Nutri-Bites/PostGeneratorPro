@@ -1075,62 +1075,6 @@ async function renderAll() {
   await renderPost();
 }
 
-// ===========================
-// EXPORT — Template styles for 1080×1080 PNG generation
-// ===========================
-const EXPORT_TEMPLATES = {
-  1: {
-    bg: 'linear-gradient(145deg, #2d1200 0%, #5c2d00 40%, #2d4000 100%)',
-    deco: 'radial-gradient(circle at 80% 20%, rgba(217,119,6,0.55) 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(21,128,61,0.4) 0%, transparent 50%)',
-    priceBg: 'linear-gradient(135deg, #D97706, #F59E0B)',
-    tagBg: 'rgba(253,230,138,0.2)',
-    tagColor: '#FDE68A',
-    tagBorder: '1px solid rgba(253,230,138,0.4)',
-    divider: 'linear-gradient(90deg, transparent, #D97706, transparent)',
-    footerBg: 'linear-gradient(0deg, rgba(0,0,0,0.5), transparent)',
-  },
-  2: {
-    bg: 'linear-gradient(160deg, #0f3018 0%, #164d28 50%, #0a2e12 100%)',
-    deco: 'radial-gradient(circle at 30% 30%, rgba(21,128,61,0.6) 0%, transparent 55%), radial-gradient(circle at 70% 80%, rgba(253,230,138,0.3) 0%, transparent 45%)',
-    priceBg: 'linear-gradient(135deg, #15803D, #22C55E)',
-    tagBg: 'rgba(110,231,183,0.18)',
-    tagColor: '#6EE7B7',
-    tagBorder: '1px solid rgba(110,231,183,0.35)',
-    divider: 'linear-gradient(90deg, transparent, #22C55E, transparent)',
-    footerBg: 'linear-gradient(0deg, rgba(0,0,0,0.45), transparent)',
-  },
-  3: {
-    bg: 'linear-gradient(145deg, #2e0808 0%, #4d1a00 40%, #2e142e 100%)',
-    deco: 'radial-gradient(circle at 75% 25%, rgba(239,68,68,0.5) 0%, transparent 50%), radial-gradient(circle at 25% 75%, rgba(234,88,12,0.55) 0%, transparent 55%)',
-    priceBg: 'linear-gradient(135deg, #DC2626, #F97316)',
-    tagBg: 'rgba(252,165,165,0.18)',
-    tagColor: '#FCA5A5',
-    tagBorder: '1px solid rgba(252,165,165,0.35)',
-    divider: 'linear-gradient(90deg, transparent, #F97316, transparent)',
-    footerBg: 'linear-gradient(0deg, rgba(0,0,0,0.45), transparent)',
-  },
-  4: {
-    bg: 'linear-gradient(145deg, #121230 0%, #1e1e5c 50%, #141428 100%)',
-    deco: 'radial-gradient(circle at 80% 20%, rgba(139,92,246,0.55) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(6,182,212,0.35) 0%, transparent 50%)',
-    priceBg: 'linear-gradient(135deg, #7C3AED, #A855F7)',
-    tagBg: 'rgba(196,181,253,0.16)',
-    tagColor: '#C4B5FD',
-    tagBorder: '1px solid rgba(196,181,253,0.35)',
-    divider: 'linear-gradient(90deg, transparent, #A855F7, transparent)',
-    footerBg: 'linear-gradient(0deg, rgba(0,0,0,0.45), transparent)',
-  },
-  5: {
-    bg: 'linear-gradient(145deg, #003030 0%, #004830 50%, #003018 100%)',
-    deco: 'radial-gradient(circle at 70% 30%, rgba(20,184,166,0.55) 0%, transparent 55%), radial-gradient(circle at 30% 70%, rgba(234,179,8,0.45) 0%, transparent 50%)',
-    priceBg: 'linear-gradient(135deg, #0D9488, #14B8A6)',
-    tagBg: 'rgba(94,234,212,0.16)',
-    tagColor: '#5EEAD4',
-    tagBorder: '1px solid rgba(94,234,212,0.35)',
-    divider: 'linear-gradient(90deg, transparent, #14B8A6, transparent)',
-    footerBg: 'linear-gradient(0deg, rgba(0,0,0,0.45), transparent)',
-  },
-};
-
 // Convert an image URL to a data-URI to sidestep CORS during html2canvas export
 function loadImageAsDataUrl(url, timeout) {
   timeout = timeout || 10000;
@@ -1153,282 +1097,119 @@ function loadImageAsDataUrl(url, timeout) {
   });
 }
 
-// Generate a higher-resolution QR code for the 1080px export
-function generateExportQR(url) {
-  return new Promise(function(resolve) {
-    var container = document.getElementById('qrGen');
-    container.innerHTML = '';
-    var div = document.createElement('div');
-    container.appendChild(div);
-    try {
-      new QRCode(div, {
-        text: url || 'https://gt-nutri-bites.github.io',
-        width: 160, height: 160,
-        colorDark: '#000', colorLight: '#fff',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-      setTimeout(function() {
-        var img = div.querySelector('img') || div.querySelector('canvas');
-        if (img) resolve(img.tagName === 'IMG' ? img.src : img.toDataURL());
-        else resolve('');
-      }, 300);
-    } catch(e) { resolve(''); }
-  });
-}
-
-// Format nutrition value for export (unit rendered in DM Sans, not Bebas Neue)
-function formatNutValExport(val) {
-  var normalized = val.trim().replace(/\s+/g, '');
-  var match = normalized.match(/^(\d+(?:\.\d+)?)(.*)$/);
-  if (match && match[2]) {
-    return match[1] + '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.65em;font-weight:500;line-height:1;">' + match[2] + '</span>';
-  }
-  return val;
-}
-
-// Build the 1080×1080 export HTML using only CSS features that html2canvas
-// renders reliably: absolute positioning, table/table-cell, inline-block, floats.
-// No flexbox, no clamp(), no CSS animations.
-function buildExportHTML(p, w, tmpl, imgDataUrl, qrDataUrl, opts) {
-  var ts = EXPORT_TEMPLATES[tmpl];
-  var price = p.price, oldPrice = p.oldPrice;
-  if (p.weightVariants && p.weightVariants[w]) {
-    price = p.weightVariants[w].price;
-    oldPrice = p.weightVariants[w].oldPrice;
-  }
-  var saving = oldPrice - price;
-
-  // Badge style
-  var badgeMap = {
-    'BEST SELLER': { bg: '#15803D', color: '#fff' },
-    'PREMIUM':     { bg: '#7C3AED', color: '#fff' },
-    'NEW':         { bg: '#D97706', color: '#fff' },
-    'ORGANIC':     { bg: '#15803D', color: '#fff' },
-  };
-  var bStyle = p.badge ? (badgeMap[p.badge] || { bg: '#374151', color: '#fff' }) : null;
-
-  // Calories
-  var calParts = p.nutrition.calories.split(' ');
-  var calValue = calParts[0];
-  var calServing = calParts.length > 1 ? calParts.slice(1).join(' ') : '';
-
-  // --- Nutrition strip (table layout) ---
-  var nutritionHTML = '';
-  if (opts.showNutrition) {
-    var nutCell = 'display:table-cell;padding:10px 4px;text-align:center;vertical-align:middle;';
-    var nutBorder = 'border-right:2px solid rgba(255,255,255,0.1);';
-    var nutValStyle = 'font-family:\'Bebas Neue\',cursive;font-size:28px;color:#fff;line-height:1;';
-    var nutKeyStyle = 'font-size:14px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.06em;line-height:1.3;';
-    nutritionHTML =
-      '<div style="display:table;width:100%;table-layout:fixed;background:rgba(255,255,255,0.08);border-radius:16px;border:2px solid rgba(255,255,255,0.12);overflow:hidden;margin-bottom:16px;">' +
-        '<div style="' + nutCell + nutBorder + '">' +
-          '<div style="' + nutValStyle + '">' + calValue + '</div>' +
-          '<div style="' + nutKeyStyle + '">Kcal</div>' +
-          (calServing ? '<div style="font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:0.04em;margin-top:2px;line-height:1;">' + calServing + '</div>' : '') +
-        '</div>' +
-        '<div style="' + nutCell + nutBorder + '">' +
-          '<div style="' + nutValStyle + '">' + formatNutValExport(p.nutrition.protein) + '</div>' +
-          '<div style="' + nutKeyStyle + '">Protein</div>' +
-        '</div>' +
-        '<div style="' + nutCell + nutBorder + '">' +
-          '<div style="' + nutValStyle + '">' + formatNutValExport(p.nutrition.fat) + '</div>' +
-          '<div style="' + nutKeyStyle + '">Fat</div>' +
-        '</div>' +
-        '<div style="' + nutCell + nutBorder + '">' +
-          '<div style="' + nutValStyle + '">' + formatNutValExport(p.nutrition.carbs) + '</div>' +
-          '<div style="' + nutKeyStyle + '">Carbs</div>' +
-        '</div>' +
-        '<div style="' + nutCell + '">' +
-          '<div style="' + nutValStyle + '">' + formatNutValExport(p.nutrition.fiber) + '</div>' +
-          '<div style="' + nutKeyStyle + '">Fiber</div>' +
-        '</div>' +
-      '</div>';
-  }
-
-  // --- Benefits (inline-block pills) ---
-  var benefitsHTML = '';
-  if (opts.showBenefits && p.benefits) {
-    benefitsHTML = '<div style="margin-bottom:16px;">';
-    p.benefits.slice(0, 3).forEach(function(b) {
-      benefitsHTML += '<span style="display:inline-block;font-size:18px;padding:6px 20px;border-radius:99px;font-weight:500;' +
-        'background:' + ts.tagBg + ';color:' + ts.tagColor + ';border:' + ts.tagBorder + ';' +
-        'margin-right:8px;margin-bottom:4px;text-align:center;line-height:1.2;vertical-align:middle;">' + b + '</span>';
-    });
-    benefitsHTML += '</div>';
-  }
-
-  // --- Circular badge ---
-  var badgeHTML = '';
-  if (p.badge && bStyle) {
-    badgeHTML =
-      '<div style="position:absolute;top:120px;right:30px;z-index:10;width:120px;height:120px;border-radius:50%;' +
-      'background:' + bStyle.bg + ';color:' + bStyle.color + ';display:table;text-align:center;' +
-      'box-shadow:0 8px 30px rgba(0,0,0,0.4);">' +
-        '<div style="display:table-cell;vertical-align:middle;text-align:center;font-size:18px;font-weight:700;' +
-        'letter-spacing:0.04em;line-height:1.15;padding:8px;">' +
-          p.badge.replace(/ /g, '<br>') +
-        '</div>' +
-      '</div>';
-  }
-
-  // --- QR code (float right) ---
-  var qrHTML = '';
-  if (opts.showQR && qrDataUrl) {
-    qrHTML =
-      '<div style="float:right;text-align:center;">' +
-        '<div style="background:#fff;padding:8px;border-radius:10px;display:inline-block;">' +
-          '<img src="' + qrDataUrl + '" width="96" height="96" style="display:block;border-radius:4px;">' +
-        '</div>' +
-        '<div style="font-size:14px;color:rgba(255,255,255,0.6);letter-spacing:0.04em;margin-top:6px;">Scan to Order</div>' +
-      '</div>';
-  }
-
-  // --- Price block (float left) ---
-  var priceHTML =
-    '<div style="float:left;">' +
-      '<div>' +
-        '<span style="font-family:\'Bebas Neue\',cursive;font-size:64px;line-height:1;color:#fff;">Rs. ' + price.toLocaleString() + '</span>' +
-        (opts.showOldPrice && oldPrice
-          ? '<span style="font-size:24px;text-decoration:line-through;color:rgba(255,255,255,0.55);margin-left:16px;vertical-align:baseline;">Rs. ' + oldPrice.toLocaleString() + '</span>'
-          : '') +
-      '</div>' +
-      '<div style="font-size:20px;color:rgba(255,255,255,0.65);margin-top:4px;">per ' + w + '</div>' +
-      (opts.showOldPrice && saving > 0
-        ? '<div style="margin-top:8px;"><span style="display:inline-block;font-size:18px;padding:6px 20px;border-radius:99px;font-weight:700;' +
-          'color:#fff;letter-spacing:0.04em;background:' + ts.priceBg + ';text-align:center;line-height:1;">SAVE Rs.' + saving + '</span></div>'
-        : '') +
-    '</div>';
-
-  // --- Assemble full 1080×1080 HTML ---
-  return '<div id="export-canvas" style="width:1080px;height:1080px;position:relative;overflow:hidden;font-family:\'DM Sans\',sans-serif;background:' + ts.bg + ';">' +
-    /* Background decorations */
-    '<div style="position:absolute;top:0;left:0;right:0;bottom:0;background:' + ts.deco + ';"></div>' +
-    /* Geometric circles */
-    '<div style="position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;">' +
-      '<div style="position:absolute;width:1296px;height:1296px;top:-648px;left:-108px;border-radius:50%;border:2px solid rgba(255,255,255,0.08);"></div>' +
-      '<div style="position:absolute;width:864px;height:864px;bottom:-324px;right:-216px;border-radius:50%;border:2px solid rgba(255,255,255,0.08);"></div>' +
-    '</div>' +
-    /* Corner decoration */
-    '<svg style="position:absolute;bottom:56px;left:32px;width:80px;height:80px;opacity:0.12;" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-      '<circle cx="30" cy="30" r="28" stroke="white" stroke-width="1"/>' +
-      '<circle cx="30" cy="30" r="20" stroke="white" stroke-width="0.5"/>' +
-      '<line x1="30" y1="2" x2="30" y2="58" stroke="white" stroke-width="0.5"/>' +
-      '<line x1="2" y1="30" x2="58" y2="30" stroke="white" stroke-width="0.5"/>' +
-    '</svg>' +
-    /* Header */
-    '<div style="position:absolute;top:0;left:0;right:0;padding:28px 36px 20px;z-index:10;">' +
-      '<div style="float:left;">' +
-        '<div style="font-family:\'Bebas Neue\',cursive;font-size:42px;letter-spacing:0.12em;color:rgba(255,255,255,0.95);line-height:1;">' + opts.company + '</div>' +
-        (opts.tagline ? '<div style="font-size:16px;color:rgba(255,255,255,0.45);letter-spacing:0.06em;margin-top:2px;line-height:1.2;">' + opts.tagline + '</div>' : '') +
-      '</div>' +
-      '<div style="float:right;padding-top:8px;">' +
-        '<span style="display:inline-block;font-size:20px;padding:8px 24px;border-radius:99px;font-weight:600;letter-spacing:0.08em;' +
-        'text-transform:uppercase;background:' + ts.tagBg + ';color:' + ts.tagColor + ';border:' + ts.tagBorder + ';text-align:center;line-height:1.2;">' + p.category + '</span>' +
-      '</div>' +
-      '<div style="clear:both;"></div>' +
-    '</div>' +
-    /* Badge */
-    badgeHTML +
-    /* Product image */
-    '<div style="position:absolute;top:90px;left:0;right:0;height:460px;text-align:center;overflow:hidden;">' +
-      '<div style="position:absolute;left:162px;top:30px;width:756px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,235,205,0.2),transparent 70%);opacity:0.3;"></div>' +
-      '<img src="' + imgDataUrl + '" style="position:relative;z-index:2;width:380px;height:380px;object-fit:contain;display:block;margin:40px auto 0;" crossorigin="anonymous">' +
-    '</div>' +
-    /* Info section */
-    '<div style="position:absolute;bottom:50px;left:0;right:0;padding:0 36px;z-index:5;">' +
-      '<div style="height:2px;background:' + ts.divider + ';opacity:0.6;margin-bottom:16px;"></div>' +
-      nutritionHTML +
-      '<div style="font-family:\'Playfair Display\',serif;font-size:42px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:8px;">' + p.name + '</div>' +
-      '<div style="font-size:20px;color:rgba(255,255,255,0.7);margin-bottom:14px;font-weight:400;">' + p.description + '</div>' +
-      benefitsHTML +
-      '<div style="overflow:hidden;">' +
-        qrHTML +
-        priceHTML +
-        '<div style="clear:both;"></div>' +
-      '</div>' +
-    '</div>' +
-    /* Footer */
-    '<div style="position:absolute;bottom:0;left:0;right:0;height:50px;background:' + ts.footerBg + ';z-index:6;">' +
-      '<div style="display:table;width:100%;height:100%;">' +
-        '<div style="display:table-cell;vertical-align:middle;text-align:center;font-size:18px;color:rgba(255,255,255,0.6);letter-spacing:0.1em;font-weight:500;">' + opts.website.toUpperCase() + '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div>';
-}
-
 // ===========================
-// DOWNLOAD
+// DOWNLOAD — Capture preview DOM directly, scaled to 1080×1080
 // ===========================
 document.getElementById('downloadBtn').addEventListener('click', async () => {
   const overlay = document.getElementById('loadingOverlay');
   overlay.style.display = 'flex';
-  let offscreen = null;
+  const wrap = document.getElementById('post-canvas-wrap');
 
   try {
     const p = state.product;
     const w = state.weight;
-    const tmpl = state.tmpl;
-    const company = document.getElementById('companyName').value || 'GT Nutri Bites';
-    const website = document.getElementById('websiteUrl').value || 'gt-nutri-bites.github.io';
-    const tagline = document.getElementById('tagline').value || '';
 
-    // Pre-load product image as data-URI and generate high-res QR in parallel
+    // Pre-load product image as data-URI to avoid CORS issues
     const productImgUrl = bgRemovalCache[p.image] || p.image;
-    const [imgDataUrl, qrDataUrl] = await Promise.all([
-      loadImageAsDataUrl(productImgUrl),
-      generateExportQR('https://' + website.replace(/^https?:\/\//, ''))
-    ]);
+    const imgDataUrl = await loadImageAsDataUrl(productImgUrl);
 
-    // Build the dedicated 1080×1080 export element
-    const exportHTML = buildExportHTML(p, w, tmpl, imgDataUrl, qrDataUrl, {
-      company,
-      website,
-      tagline,
-      showNutrition: document.getElementById('showNutrition').checked,
-      showBenefits: document.getElementById('showBenefits').checked,
-      showOldPrice: document.getElementById('showOldPrice').checked,
-      showQR: document.getElementById('showQR').checked,
-    });
+    // Strip preview-only cosmetics (border-radius, box-shadow)
+    wrap.classList.add('export-mode');
 
-    // Mount offscreen so html2canvas can read computed styles
-    offscreen = document.createElement('div');
-    offscreen.style.cssText = 'position:fixed;left:-9999px;top:0;z-index:-1;';
-    offscreen.innerHTML = exportHTML;
-    document.body.appendChild(offscreen);
-
-    // Wait for fonts to load and layout to settle
+    // Wait for fonts and layout to settle
     await document.fonts.ready;
     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-    const exportEl = offscreen.querySelector('#export-canvas');
-    let result;
+    // Compute scale factor: preview size → 1080px
+    const previewWidth = wrap.offsetWidth;
+    const scaleFactor = 1080 / previewWidth;
 
-    // Capture at native 1080×1080 with scale:1 (no upscaling)
+    let result;
+    const h2cOpts = {
+      scale: scaleFactor,
+      useCORS: true,
+      logging: false,
+      backgroundColor: null,
+      onclone: (clonedDoc) => {
+        const cw = clonedDoc.getElementById('post-canvas-wrap');
+        if (!cw) return;
+
+        // Replace product image src with pre-loaded data-URI (avoids CORS)
+        const cImg = cw.querySelector('.post-img');
+        if (cImg) cImg.src = imgDataUrl;
+
+        // Remove shimmer animation — html2canvas freezes it mid-frame
+        const shimmer = cw.querySelector('.post-shimmer');
+        if (shimmer) shimmer.style.display = 'none';
+
+        // Remove slideUp animation class so the clone is fully visible
+        const inner = cw.querySelector('.animate-up');
+        if (inner) {
+          inner.style.animation = 'none';
+          inner.style.opacity = '1';
+          inner.style.transform = 'none';
+        }
+
+        // --- Patch flex-based centering for html2canvas reliability ---
+
+        // Badge circle: flex → table/table-cell
+        const badge = cw.querySelector('.post-badge-float');
+        if (badge) {
+          badge.style.display = 'table';
+          badge.style.textAlign = 'center';
+          const inner = badge.firstElementChild;
+          if (inner) {
+            inner.style.display = 'table-cell';
+            inner.style.verticalAlign = 'middle';
+            inner.style.textAlign = 'center';
+          }
+        }
+
+        // Footer bar: flex → table/table-cell
+        const footer = cw.querySelector('.post-footer-bar');
+        if (footer) {
+          footer.style.display = 'table';
+          footer.style.width = '100%';
+          const ftText = footer.querySelector('.post-website-text');
+          if (ftText) {
+            ftText.style.display = 'table-cell';
+            ftText.style.verticalAlign = 'middle';
+            ftText.style.textAlign = 'center';
+          }
+        }
+
+        // Nutrition strip: flex → table/table-cell
+        const nutStrip = cw.querySelector('.post-nutrition-strip');
+        if (nutStrip) {
+          nutStrip.style.display = 'table';
+          nutStrip.style.width = '100%';
+          nutStrip.style.tableLayout = 'fixed';
+          cw.querySelectorAll('.post-nut-item').forEach(item => {
+            item.style.display = 'table-cell';
+            item.style.verticalAlign = 'middle';
+            item.style.textAlign = 'center';
+          });
+        }
+
+        // Category badge & benefit tags: inline-flex → inline-block
+        const catBadge = cw.querySelector('.post-category-badge');
+        if (catBadge) catBadge.style.display = 'inline-block';
+        cw.querySelectorAll('.post-benefit-tag').forEach(t => { t.style.display = 'inline-block'; });
+
+        // Save chip
+        const saveChip = cw.querySelector('.post-save-chip');
+        if (saveChip) saveChip.style.display = 'inline-block';
+
+        // Nut values: inline-flex → inline-block
+        cw.querySelectorAll('.post-nut-val').forEach(v => { v.style.display = 'inline-block'; });
+      }
+    };
+
     try {
-      result = await html2canvas(exportEl, {
-        scale: 1,
-        useCORS: true,
-        allowTaint: false,
-        logging: false,
-        backgroundColor: null,
-        width: 1080,
-        height: 1080,
-        windowWidth: 1200,
-        windowHeight: 1200,
-      });
+      result = await html2canvas(wrap, { ...h2cOpts, allowTaint: false });
     } catch (_corsErr) {
       // Fallback: allow tainted canvas if strict CORS fails
-      result = await html2canvas(exportEl, {
-        scale: 1,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-        backgroundColor: null,
-        width: 1080,
-        height: 1080,
-        windowWidth: 1200,
-        windowHeight: 1200,
-      });
+      result = await html2canvas(wrap, { ...h2cOpts, allowTaint: true });
     }
 
     // Trigger download
@@ -1441,10 +1222,7 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     showToast('⚠ Error generating image. Try again.');
     console.error(e);
   } finally {
-    // Always cleanup offscreen element and hide overlay
-    if (offscreen && offscreen.parentNode) {
-      document.body.removeChild(offscreen);
-    }
+    wrap.classList.remove('export-mode');
     overlay.style.display = 'none';
   }
 });
