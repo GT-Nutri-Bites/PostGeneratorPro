@@ -1170,8 +1170,8 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
           if (header) {
             header.style.display = 'table';
             header.style.width = '100%';
-            const kids = Array.from(header.children);
-            kids.forEach((child, i) => {
+            const headerChildren = Array.from(header.children);
+            headerChildren.forEach((child, i) => {
               child.style.display = 'table-cell';
               child.style.verticalAlign = 'middle';
               child.style.textAlign = i === 0 ? 'left' : 'right';
