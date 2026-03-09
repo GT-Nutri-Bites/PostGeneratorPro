@@ -236,8 +236,9 @@
 
   /* Product image */
   .post-img-zone {
-    flex: 1;
+    flex: 1 1 auto;
     min-height: 0;
+    max-height: 45%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -250,8 +251,8 @@
     padding-bottom: 65%;
     border-radius: 50%;
     filter: blur(40px);
-    opacity: 0.55;
-    background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%);
+    opacity: 0.25;
+    background: radial-gradient(circle, rgba(255,235,205,0.3), transparent 70%);
   }
   .post-img {
     width: clamp(180px, 50%, 300px);
@@ -266,7 +267,7 @@
   /* Badge on image */
   .post-badge-float {
     position: absolute;
-    top: 55px;
+    top: 70px;
     right: 16px;
     z-index: 10;
     width: clamp(52px, 10%, 72px);
@@ -287,7 +288,7 @@
 
   /* Bottom info area */
   .post-info {
-    padding: 10px 18px 38px;
+    padding: 10px 18px 50px;
     position: relative;
     z-index: 5;
     flex-shrink: 0;
@@ -747,7 +748,8 @@ let state = {
 
 // Format nutrition value: separate number from unit so "g" renders in a regular font (not Bebas Neue which is all-caps)
 function formatNutVal(val) {
-  const match = val.match(/^([\d.]+)\s*(.*)$/);
+  const normalized = val.trim().replace(/\s+/g, '');
+  const match = normalized.match(/^([\d.]+)(.*)$/);
   if (match && match[2]) {
     return `${match[1]}<span class="post-nut-unit">${match[2]}</span>`;
   }
@@ -849,6 +851,7 @@ function getBackgroundRemovedUrl(url) {
 function tryLoadBgRemovedImage(originalUrl) {
   // Skip if already tested (avoids retrying failed removals)
   if (bgRemovalCache[originalUrl] !== undefined) return;
+  bgRemovalCache[originalUrl] = null; // Mark as in-progress to prevent duplicate requests
   const bgRemovedUrl = getBackgroundRemovedUrl(originalUrl);
   const testImg = new Image();
   testImg.crossOrigin = 'anonymous';
@@ -935,7 +938,7 @@ async function renderPost() {
     <!-- Image zone -->
     <div class="post-img-zone">
       <div class="post-img-glow"></div>
-      <img class="post-img" src="${bgRemovalCache[p.image] || p.image}" data-original="${p.image}" crossorigin="anonymous" alt="${p.name}">
+      <img class="post-img" src="${bgRemovalCache[p.image] && bgRemovalCache[p.image] !== null ? bgRemovalCache[p.image] : p.image}" data-original="${p.image}" crossorigin="anonymous" alt="${p.name}">
     </div>
 
     <!-- Info -->
@@ -947,6 +950,7 @@ async function renderPost() {
         <div class="post-nut-item">
           <div class="post-nut-val">${p.nutrition.calories.split(' ')[0]}</div>
           <div class="post-nut-key">Kcal</div>
+          ${p.nutrition.calories.split(' ').length > 1 ? `<div class="post-nut-key" style="font-size:clamp(6px,1vw,8px);margin-top:1px">${p.nutrition.calories.split(' ').slice(1).join(' ')}</div>` : ''}
         </div>
         <div class="post-nut-item">
           <div class="post-nut-val">${formatNutVal(p.nutrition.protein)}</div>
@@ -981,10 +985,8 @@ async function renderPost() {
             <div class="post-price-main">Rs. ${price.toLocaleString()}</div>
             ${showOldPrice && oldPrice ? `<div class="post-price-old">Rs. ${oldPrice.toLocaleString()}</div>` : ''}
           </div>
-          <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
-            <div class="post-price-weight">per ${w}</div>
-            ${showOldPrice && saving > 0 ? `<span class="post-save-chip post-price-bg">SAVE Rs.${saving}</span>` : ''}
-          </div>
+          <div class="post-price-weight" style="margin-top:2px">per ${w}</div>
+            ${showOldPrice && saving > 0 ? `<div style="margin-top:4px"><span class="post-save-chip post-price-bg">SAVE Rs.${saving}</span></div>` : ''}
         </div>
 
         ${showQR && qrUrl ? `
@@ -1059,15 +1061,29 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     const canvas = document.getElementById('post-canvas');
     const wrap = document.getElementById('post-canvas-wrap');
     const size = wrap.offsetWidth;
+    const exportScale = Math.min(Math.ceil(1080 / size), 3);
 
-    const result = await html2canvas(canvas, {
-      width: size, height: size,
-      scale: Math.ceil(1080 / size),
-      useCORS: true,
-      allowTaint: false,
-      logging: false,
-      backgroundColor: null,
-    });
+    let result;
+    try {
+      result = await html2canvas(canvas, {
+        width: size, height: size,
+        scale: exportScale,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+        backgroundColor: null,
+      });
+    } catch(corsError) {
+      // Fallback: allow tainted canvas for degraded-but-functional export when CORS fails
+      result = await html2canvas(canvas, {
+        width: size, height: size,
+        scale: exportScale,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        backgroundColor: null,
+      });
+    }
 
     const link = document.createElement('a');
     link.download = `${state.product.name.replace(/\s+/g,'_')}_${state.weight}_post.png`;
@@ -1127,6 +1143,8 @@ function showToast(msg) {
 // ===========================
 buildProductList();
 buildThumbGrid();
+// Pre-cache background-removed images for all products
+data.products.forEach(p => tryLoadBgRemovedImage(p.image));
 renderAll();
 </script>
 </body>
