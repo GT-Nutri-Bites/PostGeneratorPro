@@ -1082,7 +1082,8 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     canvas.style.width = exportSize + 'px';
     canvas.style.height = exportSize + 'px';
     
-    // Wait for browser reflow using requestAnimationFrame for reliability
+    // Wait for browser reflow using double requestAnimationFrame for reliability
+    // First rAF schedules callback after next paint, second ensures layout is complete
     await new Promise(resolve => {
       requestAnimationFrame(() => {
         requestAnimationFrame(resolve);
@@ -1100,8 +1101,8 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
           allowTaint: false,
           logging: false,
           backgroundColor: null,
-          windowWidth: exportSize,   // Set viewport context for clamp() calculations
-          windowHeight: exportSize,
+          windowWidth: exportSize,   // Set viewport width for CSS viewport-relative calculations (clamp, vw, etc.)
+          windowHeight: exportSize,  // Set viewport height for CSS viewport-relative calculations
         });
       } catch (corsError) {
         // Fallback: allow tainted canvas for degraded-but-functional export when CORS fails
@@ -1113,8 +1114,8 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
           allowTaint: true,
           logging: false,
           backgroundColor: null,
-          windowWidth: exportSize,
-          windowHeight: exportSize,
+          windowWidth: exportSize,   // Set viewport width for CSS viewport-relative calculations (clamp, vw, etc.)
+          windowHeight: exportSize,  // Set viewport height for CSS viewport-relative calculations
         });
       }
 
