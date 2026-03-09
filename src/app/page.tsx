@@ -32,6 +32,9 @@ export default function Home() {
   const [showBenefits, setShowBenefits] = useState(true);
   const [showOldPrice, setShowOldPrice] = useState(true);
   const [showQR, setShowQR] = useState(true);
+  const [postFormat, setPostFormat] = useState<"square" | "story">("square");
+  const [platform, setPlatform] = useState("instagram");
+  const [captionTone, setCaptionTone] = useState("professional");
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "" });
 
@@ -94,6 +97,12 @@ export default function Home() {
           onShowOldPriceChange={setShowOldPrice}
           showQR={showQR}
           onShowQRChange={setShowQR}
+          postFormat={postFormat}
+          onPostFormatChange={setPostFormat}
+          platform={platform}
+          onPlatformChange={setPlatform}
+          captionTone={captionTone}
+          onCaptionToneChange={setCaptionTone}
           setLoading={setLoading}
           showToast={showToast}
           product={product}
@@ -116,10 +125,18 @@ export default function Home() {
           price={price}
           oldPrice={oldPrice}
           saving={saving}
+          postFormat={postFormat}
+          platform={platform}
+          captionTone={captionTone}
         />
 
-        <ThumbGrid products={data.products} onSelectProduct={selectProduct} />
+        <ThumbGrid
+          products={data.products}
+          selectedProduct={product}
+          onSelectProduct={selectProduct}
+        />
       </div>
     </>
   );
 }
+

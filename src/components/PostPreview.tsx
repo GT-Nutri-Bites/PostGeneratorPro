@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import type { Product } from "@/data/types";
+import { generateCaption } from "@/utils/caption";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -21,26 +22,6 @@ function formatNutVal(val: string): string {
   return val;
 }
 
-function generateCaption(
-  product: Product,
-  price: number,
-  weight: string,
-  website: string,
-  company: string
-): string {
-  const hashtags: Record<string, string> = {
-    nuts: "#almonds #nuts #healthysnacks #organicnuts #premium",
-    seeds: "#seeds #healthyfood #superfood #nutrients #wellness",
-    dried_fruits: "#driedfruits #healthysnack #natural #organic",
-    mix: "#mixednuts #healthy #snack #premium #organic",
-  };
-  const ht = hashtags[product.type] || "#healthyfood #natural #organic";
-  return `✨ ${product.name} — Now Available!\n\n${product.description}\n\n🌟 Key Benefits:\n${product.benefits
-    .slice(0, 3)
-    .map((b) => `• ${b}`)
-    .join("\n")}\n\n💰 Price: Rs. ${price.toLocaleString()} / ${weight}\n\n🛒 Order Now: ${website}\n📦 Fast Delivery Island-wide\n\n${ht} #${company.replace(/\s+/g, "").toLowerCase()} #srilanka #nutrisri`;
-}
-
 interface PostPreviewProps {
   product: Product;
   weight: string;
@@ -55,6 +36,9 @@ interface PostPreviewProps {
   price: number;
   oldPrice: number;
   saving: number;
+  postFormat: "square" | "story";
+  platform: string;
+  captionTone: string;
 }
 
 export default function PostPreview({
@@ -71,13 +55,25 @@ export default function PostPreview({
   price,
   oldPrice,
   saving,
+  postFormat,
+  platform,
+  captionTone,
 }: PostPreviewProps) {
   const qrRef = useRef<HTMLDivElement>(null);
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [bgRemovedUrl, setBgRemovedUrl] = useState<string | null>(null);
+  const [imageIdx, setImageIdx] = useState(0);
 
   const company = companyName || "GT Nutri Bites";
   const website = websiteUrl || "gt-nutri-bites.github.io";
+
+  // Reset image index when product changes
+  useEffect(() => {
+    setImageIdx(0);
+  }, [product.id]);
+
+  // Resolve the selected image URL — guard against out-of-bounds index
+  const selectedImageUrl = product.images?.[imageIdx] || product.image;
 
   // Parse calorie parts
   const calParts = product.nutrition.calories.split(" ");
@@ -111,10 +107,10 @@ export default function PostPreview({
     return () => { cancelled = true; };
   }, [website]);
 
-  // Try background removal via Cloudinary
+  // Try background removal via Cloudinary on selected image
   useEffect(() => {
     setBgRemovedUrl(null);
-    const bgRemovedImgUrl = product.image.replace(
+    const bgRemovedImgUrl = selectedImageUrl.replace(
       "/upload/",
       "/upload/e_background_removal/"
     );
@@ -123,14 +119,16 @@ export default function PostPreview({
     testImg.onload = () => setBgRemovedUrl(bgRemovedImgUrl);
     testImg.onerror = () => setBgRemovedUrl(null);
     testImg.src = bgRemovedImgUrl;
-  }, [product.image]);
+  }, [selectedImageUrl]);
 
-  const displayImage = bgRemovedUrl || product.image;
+  const displayImage = bgRemovedUrl || selectedImageUrl;
 
   const caption = useMemo(
-    () => generateCaption(product, price, weight, website, company),
-    [product, price, weight, website, company]
+    () => generateCaption(product, price, weight, website, company, platform, captionTone),
+    [product, price, weight, website, company, platform, captionTone]
   );
+
+  const hasMultipleImages = product.images && product.images.length > 1;
 
   return (
     <div
@@ -146,7 +144,7 @@ export default function PostPreview({
     >
       <div style={{ width: "100%", maxWidth: 540 }}>
         {/* Post Preview */}
-        <div id="post-canvas-wrap">
+        <div id="post-canvas-wrap" className={postFormat === "story" ? "format-story" : ""}>
           <div id="post-canvas" className={`post-inner tmpl-${tmpl} animate-up`} key={`${product.id}-${tmpl}`}>
             <div className="post-bg-deco" />
             <div className="post-geo" />
@@ -228,7 +226,7 @@ export default function PostPreview({
               <img
                 className="post-img"
                 src={displayImage}
-                data-original={product.image}
+                data-original={selectedImageUrl}
                 crossOrigin="anonymous"
                 alt={product.name}
               />
@@ -359,10 +357,24 @@ export default function PostPreview({
           </div>
         </div>
 
+        {/* Multi-image selector dots */}
+        {hasMultipleImages && (
+          <div className="img-selector">
+            {product.images.map((_, i) => (
+              <button
+                key={i}
+                className={`img-dot${i === imageIdx ? " active" : ""}`}
+                onClick={() => setImageIdx(i)}
+                aria-label={`Image ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+
         {/* Caption area */}
         <div
           style={{
-            marginTop: 20,
+            marginTop: hasMultipleImages ? 12 : 20,
             background: "#1a1a1a",
             border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: 10,
@@ -402,8 +414,12 @@ export default function PostPreview({
           }}
         >
           {[
-            "📐 1080 × 1080 px",
-            "📱 Instagram / Facebook",
+            postFormat === "story" ? "📐 1080 × 1350 px" : "📐 1080 × 1080 px",
+            platform === "instagram"
+              ? "📱 Instagram"
+              : platform === "facebook"
+              ? "📘 Facebook"
+              : "💬 WhatsApp",
             "🎨 High Quality PNG",
           ].map((label) => (
             <div
@@ -431,3 +447,4 @@ export default function PostPreview({
     </div>
   );
 }
+
