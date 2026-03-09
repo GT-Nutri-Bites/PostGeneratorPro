@@ -1112,6 +1112,72 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
         useCORS: true,
         logging: false,
         backgroundColor: null,
+        onclone: (clonedDoc) => {
+          // html2canvas v1.4.1 has imperfect flexbox vertical-centering.
+          // Replace flex-based centering with table/inline-block fallbacks
+          // so exported PNGs match the browser preview.
+
+          // Pill-shaped tags: inline-flex → inline-block.
+          // Equal top/bottom padding already centres text vertically;
+          // text-align: center handles horizontal centering.
+          clonedDoc.querySelectorAll(
+            '.post-category-badge, .post-benefit-tag, .post-save-chip'
+          ).forEach(el => {
+            el.style.display = 'inline-block';
+            el.style.verticalAlign = 'middle';
+          });
+
+          // Circular floating badge: flex → table / table-cell
+          const badge = clonedDoc.querySelector('.post-badge-float');
+          if (badge) {
+            badge.style.display = 'table';
+            const span = badge.querySelector('span');
+            if (span) {
+              span.style.display = 'table-cell';
+              span.style.verticalAlign = 'middle';
+              span.style.textAlign = 'center';
+            }
+          }
+
+          // Nutrition strip: flex → table layout
+          const strip = clonedDoc.querySelector('.post-nutrition-strip');
+          if (strip) {
+            strip.style.display = 'table';
+            strip.style.width = '100%';
+            strip.style.tableLayout = 'fixed';
+            clonedDoc.querySelectorAll('.post-nut-item').forEach(item => {
+              item.style.display = 'table-cell';
+              item.style.verticalAlign = 'middle';
+              item.style.textAlign = 'center';
+            });
+          }
+
+          // Footer bar: flex → table / table-cell
+          const footer = clonedDoc.querySelector('.post-footer-bar');
+          if (footer) {
+            footer.style.display = 'table';
+            footer.style.width = '100%';
+            const text = footer.querySelector('.post-website-text');
+            if (text) {
+              text.style.display = 'table-cell';
+              text.style.verticalAlign = 'middle';
+              text.style.textAlign = 'center';
+            }
+          }
+
+          // Header bar: flex → table so company-name & badge align vertically
+          const header = clonedDoc.querySelector('.post-header-bar');
+          if (header) {
+            header.style.display = 'table';
+            header.style.width = '100%';
+            const kids = Array.from(header.children);
+            kids.forEach((child, i) => {
+              child.style.display = 'table-cell';
+              child.style.verticalAlign = 'middle';
+              child.style.textAlign = i === 0 ? 'left' : 'right';
+            });
+          }
+        },
       };
 
       try {
