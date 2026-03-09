@@ -84,250 +84,74 @@ export default function Sidebar({
 }: SidebarProps) {
   const handleDownload = async () => {
     setLoading(true);
+    const wrap = document.getElementById("post-canvas-wrap");
+    const productImgEl = wrap?.querySelector(".post-img") as HTMLImageElement | null;
+    const shimmerEl = wrap?.querySelector(".post-shimmer") as HTMLElement | null;
+    const animatedEl = wrap?.querySelector(".animate-up") as HTMLElement | null;
+
+    // Stash original values so we can restore after capture
+    const origImgSrc = productImgEl?.src ?? null;
+    const origShimmerDisplay = shimmerEl?.style.display ?? null;
+    const origAnimation = animatedEl?.style.animation ?? null;
+    const origOpacity = animatedEl?.style.opacity ?? null;
+    const origTransform = animatedEl?.style.transform ?? null;
+
+    const restoreDOM = () => {
+      if (productImgEl && origImgSrc !== null) productImgEl.src = origImgSrc;
+      if (shimmerEl && origShimmerDisplay !== null) shimmerEl.style.display = origShimmerDisplay;
+      if (animatedEl) {
+        if (origAnimation !== null) animatedEl.style.animation = origAnimation;
+        if (origOpacity !== null) animatedEl.style.opacity = origOpacity;
+        if (origTransform !== null) animatedEl.style.transform = origTransform;
+      }
+    };
+
     try {
-      const html2canvas = (await import("html2canvas")).default;
-      const wrap = document.getElementById("post-canvas-wrap");
+      const { toPng } = await import("html-to-image");
       if (!wrap) throw new Error("Canvas not found");
 
-      // Pre-load product image as data-URI to avoid CORS
-      const productImgEl = wrap.querySelector(".post-img") as HTMLImageElement;
+      // Pre-load product image as data-URI to avoid cross-origin issues
       const productImgUrl = productImgEl?.src || product.image;
       const imgDataUrl = await loadImageAsDataUrl(productImgUrl);
 
+      // Swap product image to pre-loaded data URI
+      if (productImgEl) productImgEl.src = imgDataUrl;
+
+      // Suppress shimmer and entry animation during capture
+      if (shimmerEl) shimmerEl.style.display = "none";
+      if (animatedEl) {
+        animatedEl.style.animation = "none";
+        animatedEl.style.opacity = "1";
+        animatedEl.style.transform = "none";
+      }
+
+      // Strip preview-only cosmetics (border-radius, box-shadow)
       wrap.classList.add("export-mode");
       await document.fonts.ready;
-      await new Promise((r) =>
-        requestAnimationFrame(() => requestAnimationFrame(r))
+      await new Promise<void>((r) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => r()))
       );
 
-      const previewWidth = wrap.offsetWidth;
-      const scaleFactor = 1080 / previewWidth;
+      const pixelRatio = 1080 / wrap.offsetWidth;
 
-      const h2cOpts = {
-        scale: scaleFactor,
-        useCORS: true,
-        logging: false,
-        backgroundColor: null as string | null,
-        onclone: (clonedDoc: Document) => {
-          const cw = clonedDoc.getElementById("post-canvas-wrap");
-          if (!cw) return;
+      const dataUrl = await toPng(wrap, {
+        pixelRatio,
+        skipFonts: false,
+        fetchRequestInit: { mode: "cors" },
+      });
 
-          // Swap product image to preloaded data URI
-          const cImg = cw.querySelector(".post-img") as HTMLImageElement;
-          if (cImg) cImg.src = imgDataUrl;
-
-          // Kill shimmer and slide-up animation
-          const shimmer = cw.querySelector(".post-shimmer") as HTMLElement;
-          if (shimmer) shimmer.style.display = "none";
-          const animatedEl = cw.querySelector(".animate-up") as HTMLElement;
-          if (animatedEl) {
-            animatedEl.style.animation = "none";
-            animatedEl.style.opacity = "1";
-            animatedEl.style.transform = "none";
-          }
-
-          // ── Convert CSS Grid → html2canvas-compatible layout ──
-
-          // Main canvas: grid → block+relative so children can be absolute
-          const canvas = cw.querySelector("#post-canvas") as HTMLElement;
-          if (canvas) {
-            canvas.style.display = "block";
-            canvas.style.position = "relative";
-            canvas.style.width = "100%";
-            canvas.style.height = "100%";
-            canvas.style.overflow = "hidden";
-          }
-
-          // Header (grid row 1) → absolute at top with float layout
-          const header = cw.querySelector(".post-header-bar") as HTMLElement;
-          if (header) {
-            header.style.position = "absolute";
-            header.style.top = "0";
-            header.style.left = "0";
-            header.style.right = "0";
-            header.style.height = "58px";
-            header.style.zIndex = "10";
-            header.style.display = "block";
-            header.style.boxSizing = "border-box";
-            header.style.padding = "12px 18px 8px";
-            header.style.overflow = "hidden";
-            // Company name div: float left
-            const companyDiv = header.firstElementChild as HTMLElement;
-            if (companyDiv) {
-              companyDiv.style.float = "left";
-              companyDiv.style.display = "block";
-            }
-            // Category badge: float right
-            const catBadge = header.querySelector(
-              ".post-category-badge"
-            ) as HTMLElement;
-            if (catBadge) {
-              catBadge.style.float = "right";
-              catBadge.style.display = "inline-block";
-              catBadge.style.textAlign = "center";
-              catBadge.style.lineHeight = "1.2";
-              catBadge.style.marginTop = "3px";
-            }
-          }
-
-          // Image zone (grid row 2) → block with top padding to clear header
-          const imgZone = cw.querySelector(".post-img-zone") as HTMLElement;
-          if (imgZone) {
-            imgZone.style.display = "block";
-            imgZone.style.textAlign = "center";
-            imgZone.style.paddingTop = "58px";
-            imgZone.style.paddingLeft = "20px";
-            imgZone.style.paddingRight = "20px";
-            imgZone.style.paddingBottom = "8px";
-            imgZone.style.lineHeight = "0";
-          }
-          // Center the product image inline
-          const postImg = cw.querySelector(".post-img") as HTMLElement;
-          if (postImg) {
-            postImg.style.display = "inline-block";
-            postImg.style.position = "relative";
-            postImg.style.lineHeight = "normal";
-          }
-
-          // Info section (grid row 3) → block in normal flow
-          const infoSection = cw.querySelector(".post-info") as HTMLElement;
-          if (infoSection) {
-            infoSection.style.display = "block";
-            infoSection.style.padding = "8px 18px 40px";
-          }
-
-          // Footer (grid row 4) → absolute at bottom with table centering
-          const footer = cw.querySelector(".post-footer-bar") as HTMLElement;
-          if (footer) {
-            footer.style.position = "absolute";
-            footer.style.bottom = "0";
-            footer.style.left = "0";
-            footer.style.right = "0";
-            footer.style.height = "30px";
-            footer.style.display = "table";
-            footer.style.width = "100%";
-            footer.style.zIndex = "6";
-            const ftText = footer.querySelector(
-              ".post-website-text"
-            ) as HTMLElement;
-            if (ftText) {
-              ftText.style.display = "table-cell";
-              ftText.style.verticalAlign = "middle";
-              ftText.style.textAlign = "center";
-            }
-          }
-
-          // ── Shape centering: grid/flex → table/inline-block ──
-
-          // Badge circle: grid → table/table-cell
-          const badge = cw.querySelector(".post-badge-float") as HTMLElement;
-          if (badge) {
-            badge.style.display = "table";
-            badge.style.textAlign = "center";
-            const badgeInner = badge.firstElementChild as HTMLElement;
-            if (badgeInner) {
-              badgeInner.style.display = "table-cell";
-              badgeInner.style.verticalAlign = "middle";
-              badgeInner.style.textAlign = "center";
-            }
-          }
-
-          // Nutrition strip: flex → table
-          const nutStrip = cw.querySelector(
-            ".post-nutrition-strip"
-          ) as HTMLElement;
-          if (nutStrip) {
-            nutStrip.style.display = "table";
-            nutStrip.style.width = "100%";
-            nutStrip.style.tableLayout = "fixed";
-            cw.querySelectorAll(".post-nut-item").forEach((item) => {
-              const el = item as HTMLElement;
-              el.style.display = "table-cell";
-              el.style.verticalAlign = "middle";
-              el.style.textAlign = "center";
-            });
-            cw.querySelectorAll(".post-nut-val").forEach((v) => {
-              const el = v as HTMLElement;
-              el.style.display = "block";
-              el.style.textAlign = "center";
-            });
-          }
-
-          // Pills (category badge already floated in header above)
-          cw.querySelectorAll(".post-benefit-tag").forEach((t) => {
-            const el = t as HTMLElement;
-            el.style.display = "inline-block";
-            el.style.textAlign = "center";
-            el.style.lineHeight = "1.2";
-          });
-          const saveChip = cw.querySelector(".post-save-chip") as HTMLElement;
-          if (saveChip) {
-            saveChip.style.display = "inline-block";
-            saveChip.style.textAlign = "center";
-            saveChip.style.lineHeight = "1";
-          }
-
-          // Benefits row: flex → block (children are inline-block)
-          const benefitsRow = cw.querySelector(
-            ".post-benefits-row"
-          ) as HTMLElement;
-          if (benefitsRow) {
-            benefitsRow.style.display = "block";
-          }
-
-          // Bottom row: flex → block with floats
-          const bottomRow = cw.querySelector(
-            ".post-bottom-row"
-          ) as HTMLElement;
-          if (bottomRow) {
-            bottomRow.style.display = "block";
-            bottomRow.style.overflow = "hidden"; // clearfix
-            const children = Array.from(bottomRow.children).filter(
-              (c): c is HTMLElement => c instanceof HTMLElement
-            );
-            if (children[0]) children[0].style.float = "left";
-            if (children[1]) children[1].style.float = "right";
-          }
-
-          // Price block: flex → block with inline children
-          const priceBlock = cw.querySelector(
-            ".post-price-block"
-          ) as HTMLElement;
-          if (priceBlock) {
-            priceBlock.style.display = "block";
-            Array.from(priceBlock.children).forEach((child) => {
-              const el = child as HTMLElement;
-              el.style.display = "inline-block";
-              el.style.verticalAlign = "baseline";
-            });
-          }
-
-          // QR column: flex → block centered
-          const qrCol = cw.querySelector(".post-qr-col") as HTMLElement;
-          if (qrCol) {
-            qrCol.style.display = "block";
-            qrCol.style.textAlign = "center";
-          }
-        },
-      };
-
-      let result;
-      try {
-        result = await html2canvas(wrap, { ...h2cOpts, allowTaint: false });
-      } catch {
-        result = await html2canvas(wrap, { ...h2cOpts, allowTaint: true });
-      }
+      restoreDOM();
 
       const link = document.createElement("a");
       link.download = `${product.name.replace(/\s+/g, "_")}_${weight}_post.png`;
-      link.href = result.toDataURL("image/png");
+      link.href = dataUrl;
       link.click();
       showToast("✓ Post downloaded!");
     } catch (e) {
+      restoreDOM();
       showToast("⚠ Error generating image. Try again.");
       console.error(e);
     } finally {
-      const wrap = document.getElementById("post-canvas-wrap");
       if (wrap) wrap.classList.remove("export-mode");
       setLoading(false);
     }
