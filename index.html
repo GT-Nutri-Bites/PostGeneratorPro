@@ -1115,6 +1115,7 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     } finally {
       // Restore preview styles
       if (shimmer) shimmer.style.display = '';
+      canvas.classList.add('animate-up');
       wrap.classList.remove('export-mode');
     }
   } catch(e) {
