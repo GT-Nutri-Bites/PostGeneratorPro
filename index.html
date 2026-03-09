@@ -893,6 +893,11 @@ async function renderPost() {
   const saving = oldPrice - price;
   const savePct = Math.round((saving / oldPrice) * 100);
 
+  // Calorie parts
+  const calParts = p.nutrition.calories.split(' ');
+  const calValue = calParts[0];
+  const calServing = calParts.length > 1 ? calParts.slice(1).join(' ') : '';
+
   // QR
   const qrUrl = await generateQR('https://' + website.replace('https://','').replace('http://',''));
 
@@ -938,7 +943,7 @@ async function renderPost() {
     <!-- Image zone -->
     <div class="post-img-zone">
       <div class="post-img-glow"></div>
-      <img class="post-img" src="${bgRemovalCache[p.image] && bgRemovalCache[p.image] !== null ? bgRemovalCache[p.image] : p.image}" data-original="${p.image}" crossorigin="anonymous" alt="${p.name}">
+      <img class="post-img" src="${bgRemovalCache[p.image] || p.image}" data-original="${p.image}" crossorigin="anonymous" alt="${p.name}">
     </div>
 
     <!-- Info -->
@@ -948,9 +953,9 @@ async function renderPost() {
       ${showNutrition ? `
       <div class="post-nutrition-strip">
         <div class="post-nut-item">
-          <div class="post-nut-val">${p.nutrition.calories.split(' ')[0]}</div>
+          <div class="post-nut-val">${calValue}</div>
           <div class="post-nut-key">Kcal</div>
-          ${p.nutrition.calories.split(' ').length > 1 ? `<div class="post-nut-key" style="font-size:clamp(6px,1vw,8px);margin-top:1px">${p.nutrition.calories.split(' ').slice(1).join(' ')}</div>` : ''}
+          ${calServing ? `<div class="post-nut-key" style="font-size:clamp(6px,1vw,8px);margin-top:1px">${calServing}</div>` : ''}
         </div>
         <div class="post-nut-item">
           <div class="post-nut-val">${formatNutVal(p.nutrition.protein)}</div>
@@ -1073,7 +1078,7 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
         logging: false,
         backgroundColor: null,
       });
-    } catch(corsError) {
+    } catch (corsError) {
       // Fallback: allow tainted canvas for degraded-but-functional export when CORS fails
       result = await html2canvas(canvas, {
         width: size, height: size,
