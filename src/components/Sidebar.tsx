@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Product } from "@/data/types";
+import { generateCaption } from "@/utils/caption";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -182,32 +183,10 @@ export default function Sidebar({
     }
   };
 
-  const buildCaption = () => {
+  const handleCopyCaption = () => {
     const website = websiteUrl || "gt-nutri-bites.github.io";
     const company = companyName || "GT Nutri Bites";
-    const hashtags: Record<string, string> = {
-      nuts: "#almonds #nuts #healthysnacks #organicnuts #premium",
-      seeds: "#seeds #healthyfood #superfood #nutrients #wellness",
-      dried_fruits: "#driedfruits #healthysnack #natural #organic",
-      mix: "#mixednuts #healthy #snack #premium #organic",
-    };
-    const ht = hashtags[product.type] || "#healthyfood #natural #organic";
-    const companyTag = `#${company.replace(/\s+/g, "").toLowerCase()}`;
-    const benefits = product.benefits.slice(0, 3).map((b) => `• ${b}`).join("\n");
-    const useHashtags = platform !== "whatsapp";
-    const hashtagBlock = useHashtags ? `\n\n${ht} ${companyTag} #srilanka #nutrisri` : "";
-
-    if (captionTone === "friendly") {
-      return `Hey there! 👋 Looking for a healthy snack? 🌟\n\n${product.name} is here! 🥳\n\n${product.description}\n\nWhy you'll love it:\n${benefits}\n\n💰 Just Rs. ${price.toLocaleString()} / ${weight}\n\n🛒 Grab yours: ${website}\n📦 Island-wide delivery${hashtagBlock}`;
-    }
-    if (captionTone === "promotional") {
-      return `🔥 LIMITED TIME OFFER! 🔥\n\n${product.name}\n\n${product.description}\n\n✅ Benefits:\n${benefits}\n\n💥 Special Price: Rs. ${price.toLocaleString()} / ${weight}\nDon't miss out! Order NOW 👇\n🛒 ${website}\n📦 Fast Delivery Island-wide${hashtagBlock}`;
-    }
-    return `✨ ${product.name} — Now Available!\n\n${product.description}\n\n🌟 Key Benefits:\n${benefits}\n\n💰 Price: Rs. ${price.toLocaleString()} / ${weight}\n\n🛒 Order Now: ${website}\n📦 Fast Delivery Island-wide${hashtagBlock}`;
-  };
-
-  const handleCopyCaption = () => {
-    const caption = buildCaption();
+    const caption = generateCaption(product, price, weight, website, company, platform, captionTone);
     navigator.clipboard.writeText(caption).then(() => {
       showToast("Caption copied to clipboard!");
     });
@@ -395,7 +374,7 @@ export default function Sidebar({
           value={captionTone}
           onChange={(e) => onCaptionToneChange(e.target.value)}
         >
-          <option value="default">🌟 Professional</option>
+          <option value="professional">🌟 Professional</option>
           <option value="friendly">😊 Friendly</option>
           <option value="promotional">🔥 Promotional</option>
         </select>

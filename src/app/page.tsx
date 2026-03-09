@@ -34,7 +34,7 @@ export default function Home() {
   const [showQR, setShowQR] = useState(true);
   const [postFormat, setPostFormat] = useState<"square" | "story">("square");
   const [platform, setPlatform] = useState("instagram");
-  const [captionTone, setCaptionTone] = useState("default");
+  const [captionTone, setCaptionTone] = useState("professional");
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "" });
 
