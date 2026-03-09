@@ -111,6 +111,11 @@
     display: flex;
     flex-direction: column;
   }
+  /* Strip preview-only cosmetics during PNG export */
+  #post-canvas-wrap.export-mode {
+    border-radius: 0;
+    box-shadow: none;
+  }
 
   /* — Template 1: GOLDEN HARVEST — */
   .tmpl-1 { background: linear-gradient(145deg, #2d1200 0%, #5c2d00 40%, #2d4000 100%); }
@@ -1065,58 +1070,41 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
   try {
     const canvas = document.getElementById('post-canvas');
     const wrap = document.getElementById('post-canvas-wrap');
-    
-    // Export at native 1080x1080 resolution for perfect 1:1 aspect ratio
     const exportSize = 1080;
-    
-    // Store original dimensions to restore after export
-    const originalStyles = {
-      canvas: { width: canvas.style.width, height: canvas.style.height },
-      wrap: { width: wrap.style.width, height: wrap.style.height, maxWidth: wrap.style.maxWidth }
-    };
-    
-    // Temporarily set exact dimensions for export to ensure proper rendering
-    wrap.style.width = exportSize + 'px';
-    wrap.style.height = exportSize + 'px';
-    wrap.style.maxWidth = exportSize + 'px';
-    canvas.style.width = exportSize + 'px';
-    canvas.style.height = exportSize + 'px';
-    
-    // Wait for browser reflow using double requestAnimationFrame for reliability
-    // First rAF schedules callback after next paint, second ensures layout is complete
+
+    // Use the preview's natural CSS dimensions and scale up to 1080×1080.
+    // This keeps all clamp/px/% values identical to the preview so the
+    // exported image is a pixel-perfect, high-resolution copy.
+    const rect = wrap.getBoundingClientRect();
+    const scaleFactor = exportSize / rect.width;
+
+    // Hide decorative / animation layers that should not appear in the export
+    const shimmer = canvas.querySelector('.post-shimmer');
+    if (shimmer) shimmer.style.display = 'none';
+    canvas.classList.remove('animate-up');
+
+    // Remove preview-only cosmetic styles (rounded corners & shadow)
+    wrap.classList.add('export-mode');
+
+    // Wait for reflow so the style changes are applied before capture
     await new Promise(resolve => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(resolve);
-      });
+      requestAnimationFrame(() => requestAnimationFrame(resolve));
     });
 
     try {
       let result;
+      const h2cOptions = {
+        scale: scaleFactor,
+        useCORS: true,
+        logging: false,
+        backgroundColor: null,
+      };
+
       try {
-        result = await html2canvas(canvas, {
-          width: exportSize,
-          height: exportSize,
-          scale: 1,  // Render at native resolution, no upscaling
-          useCORS: true,
-          allowTaint: false,
-          logging: false,
-          backgroundColor: null,
-          windowWidth: exportSize,   // Set viewport width for CSS viewport-relative calculations (clamp, vw, etc.)
-          windowHeight: exportSize,  // Set viewport height for CSS viewport-relative calculations
-        });
+        result = await html2canvas(canvas, { ...h2cOptions, allowTaint: false });
       } catch (corsError) {
-        // Fallback: allow tainted canvas for degraded-but-functional export when CORS fails
-        result = await html2canvas(canvas, {
-          width: exportSize,
-          height: exportSize,
-          scale: 1,
-          useCORS: true,
-          allowTaint: true,
-          logging: false,
-          backgroundColor: null,
-          windowWidth: exportSize,   // Set viewport width for CSS viewport-relative calculations (clamp, vw, etc.)
-          windowHeight: exportSize,  // Set viewport height for CSS viewport-relative calculations
-        });
+        // Fallback: allow tainted canvas when CORS fails
+        result = await html2canvas(canvas, { ...h2cOptions, allowTaint: true });
       }
 
       const link = document.createElement('a');
@@ -1125,12 +1113,10 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
       link.click();
       showToast('✓ Post downloaded!');
     } finally {
-      // Always restore original dimensions, even if export fails
-      wrap.style.width = originalStyles.wrap.width;
-      wrap.style.height = originalStyles.wrap.height;
-      wrap.style.maxWidth = originalStyles.wrap.maxWidth;
-      canvas.style.width = originalStyles.canvas.width;
-      canvas.style.height = originalStyles.canvas.height;
+      // Restore preview styles
+      if (shimmer) shimmer.style.display = '';
+      canvas.classList.add('animate-up');
+      wrap.classList.remove('export-mode');
     }
   } catch(e) {
     showToast('⚠ Error generating image. Try again.');
