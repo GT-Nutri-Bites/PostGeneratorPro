@@ -1143,11 +1143,11 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
         if (shimmer) shimmer.style.display = 'none';
 
         // Remove slideUp animation class so the clone is fully visible
-        const inner = cw.querySelector('.animate-up');
-        if (inner) {
-          inner.style.animation = 'none';
-          inner.style.opacity = '1';
-          inner.style.transform = 'none';
+        const animatedEl = cw.querySelector('.animate-up');
+        if (animatedEl) {
+          animatedEl.style.animation = 'none';
+          animatedEl.style.opacity = '1';
+          animatedEl.style.transform = 'none';
         }
 
         // --- Patch flex-based centering for html2canvas reliability ---
@@ -1157,11 +1157,11 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
         if (badge) {
           badge.style.display = 'table';
           badge.style.textAlign = 'center';
-          const inner = badge.firstElementChild;
-          if (inner) {
-            inner.style.display = 'table-cell';
-            inner.style.verticalAlign = 'middle';
-            inner.style.textAlign = 'center';
+          const badgeInner = badge.firstElementChild;
+          if (badgeInner) {
+            badgeInner.style.display = 'table-cell';
+            badgeInner.style.verticalAlign = 'middle';
+            badgeInner.style.textAlign = 'center';
           }
         }
 
