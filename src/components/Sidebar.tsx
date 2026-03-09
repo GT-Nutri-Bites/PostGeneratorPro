@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Product } from "@/data/types";
 
 /* eslint-disable @next/next/no-img-element */
@@ -45,6 +46,12 @@ interface SidebarProps {
   onShowOldPriceChange: (v: boolean) => void;
   showQR: boolean;
   onShowQRChange: (v: boolean) => void;
+  postFormat: "square" | "story";
+  onPostFormatChange: (v: "square" | "story") => void;
+  platform: string;
+  onPlatformChange: (v: string) => void;
+  captionTone: string;
+  onCaptionToneChange: (v: string) => void;
   setLoading: (v: boolean) => void;
   showToast: (msg: string) => void;
   product: Product;
@@ -76,12 +83,29 @@ export default function Sidebar({
   onShowOldPriceChange,
   showQR,
   onShowQRChange,
+  postFormat,
+  onPostFormatChange,
+  platform,
+  onPlatformChange,
+  captionTone,
+  onCaptionToneChange,
   setLoading,
   showToast,
   product,
   price,
   saving,
 }: SidebarProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredProducts = searchQuery.trim()
+    ? products.filter(
+        (p) =>
+          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.type.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : products;
+
   const handleDownload = async () => {
     setLoading(true);
     const wrap = document.getElementById("post-canvas-wrap");
@@ -142,8 +166,9 @@ export default function Sidebar({
 
       restoreDOM();
 
+      const formatSuffix = postFormat === "story" ? "_story" : "_square";
       const link = document.createElement("a");
-      link.download = `${product.name.replace(/\s+/g, "_")}_${weight}_post.png`;
+      link.download = `${product.name.replace(/\s+/g, "_")}_${weight}${formatSuffix}_post.png`;
       link.href = dataUrl;
       link.click();
       showToast("✓ Post downloaded!");
@@ -157,7 +182,7 @@ export default function Sidebar({
     }
   };
 
-  const handleCopyCaption = () => {
+  const buildCaption = () => {
     const website = websiteUrl || "gt-nutri-bites.github.io";
     const company = companyName || "GT Nutri Bites";
     const hashtags: Record<string, string> = {
@@ -167,11 +192,22 @@ export default function Sidebar({
       mix: "#mixednuts #healthy #snack #premium #organic",
     };
     const ht = hashtags[product.type] || "#healthyfood #natural #organic";
-    const caption = `✨ ${product.name} — Now Available!\n\n${product.description}\n\n🌟 Key Benefits:\n${product.benefits
-      .slice(0, 3)
-      .map((b) => `• ${b}`)
-      .join("\n")}\n\n💰 Price: Rs. ${price.toLocaleString()} / ${weight}\n\n🛒 Order Now: ${website}\n📦 Fast Delivery Island-wide\n\n${ht} #${company.replace(/\s+/g, "").toLowerCase()} #srilanka #nutrisri`;
+    const companyTag = `#${company.replace(/\s+/g, "").toLowerCase()}`;
+    const benefits = product.benefits.slice(0, 3).map((b) => `• ${b}`).join("\n");
+    const useHashtags = platform !== "whatsapp";
+    const hashtagBlock = useHashtags ? `\n\n${ht} ${companyTag} #srilanka #nutrisri` : "";
 
+    if (captionTone === "friendly") {
+      return `Hey there! 👋 Looking for a healthy snack? 🌟\n\n${product.name} is here! 🥳\n\n${product.description}\n\nWhy you'll love it:\n${benefits}\n\n💰 Just Rs. ${price.toLocaleString()} / ${weight}\n\n🛒 Grab yours: ${website}\n📦 Island-wide delivery${hashtagBlock}`;
+    }
+    if (captionTone === "promotional") {
+      return `🔥 LIMITED TIME OFFER! 🔥\n\n${product.name}\n\n${product.description}\n\n✅ Benefits:\n${benefits}\n\n💥 Special Price: Rs. ${price.toLocaleString()} / ${weight}\nDon't miss out! Order NOW 👇\n🛒 ${website}\n📦 Fast Delivery Island-wide${hashtagBlock}`;
+    }
+    return `✨ ${product.name} — Now Available!\n\n${product.description}\n\n🌟 Key Benefits:\n${benefits}\n\n💰 Price: Rs. ${price.toLocaleString()} / ${weight}\n\n🛒 Order Now: ${website}\n📦 Fast Delivery Island-wide${hashtagBlock}`;
+  };
+
+  const handleCopyCaption = () => {
+    const caption = buildCaption();
     navigator.clipboard.writeText(caption).then(() => {
       showToast("Caption copied to clipboard!");
     });
@@ -254,6 +290,42 @@ export default function Sidebar({
         </div>
       </div>
 
+      {/* Post Format */}
+      <div className="ctrl-section">
+        <div className="ctrl-label">📐 Post Format</div>
+        <div style={{ display: "flex", gap: 6 }}>
+          {(["square", "story"] as const).map((fmt) => (
+            <button
+              key={fmt}
+              className={`seg-btn${postFormat === fmt ? " active" : ""}`}
+              onClick={() => onPostFormatChange(fmt)}
+            >
+              {fmt === "square" ? "⬛ Square 1:1" : "📱 Story 4:5"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Social Platform */}
+      <div className="ctrl-section">
+        <div className="ctrl-label">📣 Target Platform</div>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {[
+            { id: "instagram", label: "📷 Instagram" },
+            { id: "facebook", label: "📘 Facebook" },
+            { id: "whatsapp", label: "💬 WhatsApp" },
+          ].map((p) => (
+            <button
+              key={p.id}
+              className={`seg-btn${platform === p.id ? " active" : ""}`}
+              onClick={() => onPlatformChange(p.id)}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Weight */}
       <div className="ctrl-section">
         <div className="ctrl-label">⚖️ Weight / Size</div>
@@ -315,56 +387,85 @@ export default function Sidebar({
         </div>
       </div>
 
+      {/* Caption Tone */}
+      <div className="ctrl-section">
+        <div className="ctrl-label">✍️ Caption Tone</div>
+        <select
+          className="tone-select"
+          value={captionTone}
+          onChange={(e) => onCaptionToneChange(e.target.value)}
+        >
+          <option value="default">🌟 Professional</option>
+          <option value="friendly">😊 Friendly</option>
+          <option value="promotional">🔥 Promotional</option>
+        </select>
+      </div>
+
       {/* Products List */}
       <div className="ctrl-section">
         <div className="ctrl-label">🌰 Select Product</div>
+        {/* Product search */}
+        <input
+          className="ctrl-input"
+          type="text"
+          placeholder="🔍 Search products…"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ marginBottom: 10 }}
+        />
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {products.map((p) => (
-            <div
-              key={p.id}
-              className={`product-card${p.id === selectedProduct.id ? " active" : ""}`}
-              onClick={() => onSelectProduct(p)}
-            >
-              <img
-                src={p.image}
-                alt={p.name}
-                crossOrigin="anonymous"
-                style={{
-                  width: 42,
-                  height: 42,
-                  objectFit: "contain",
-                  borderRadius: 6,
-                  background: "#2a2a2a",
-                  flexShrink: 0,
-                }}
-              />
-              <div>
-                <div
+          {filteredProducts.length === 0 ? (
+            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", padding: "8px 0" }}>
+              No products found.
+            </div>
+          ) : (
+            filteredProducts.map((p) => (
+              <div
+                key={p.id}
+                className={`product-card${p.id === selectedProduct.id ? " active" : ""}`}
+                onClick={() => onSelectProduct(p)}
+              >
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  crossOrigin="anonymous"
                   style={{
-                    fontSize: 12,
-                    fontWeight: 600,
-                    color: "#eee",
-                    lineHeight: 1.3,
+                    width: 42,
+                    height: 42,
+                    objectFit: "contain",
+                    borderRadius: 6,
+                    background: "#2a2a2a",
+                    flexShrink: 0,
                   }}
-                >
-                  {p.name}
-                </div>
-                <div style={{ fontSize: 10, color: "#888", marginTop: 1 }}>
-                  {p.category}
-                </div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    color: "#FDE68A",
-                    marginTop: 2,
-                    fontWeight: 600,
-                  }}
-                >
-                  Rs. {p.price.toLocaleString()}
+                />
+                <div>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: "#eee",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {p.name}
+                  </div>
+                  <div style={{ fontSize: 10, color: "#888", marginTop: 1 }}>
+                    {p.category}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      color: "#FDE68A",
+                      marginTop: 2,
+                      fontWeight: 600,
+                    }}
+                  >
+                    Rs. {p.price.toLocaleString()}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
@@ -415,3 +516,4 @@ function loadImageAsDataUrl(url: string, timeout = 10000): Promise<string> {
     img.src = url;
   });
 }
+

@@ -26,7 +26,9 @@ function generateCaption(
   price: number,
   weight: string,
   website: string,
-  company: string
+  company: string,
+  platform: string,
+  tone: string
 ): string {
   const hashtags: Record<string, string> = {
     nuts: "#almonds #nuts #healthysnacks #organicnuts #premium",
@@ -35,10 +37,20 @@ function generateCaption(
     mix: "#mixednuts #healthy #snack #premium #organic",
   };
   const ht = hashtags[product.type] || "#healthyfood #natural #organic";
-  return `✨ ${product.name} — Now Available!\n\n${product.description}\n\n🌟 Key Benefits:\n${product.benefits
-    .slice(0, 3)
-    .map((b) => `• ${b}`)
-    .join("\n")}\n\n💰 Price: Rs. ${price.toLocaleString()} / ${weight}\n\n🛒 Order Now: ${website}\n📦 Fast Delivery Island-wide\n\n${ht} #${company.replace(/\s+/g, "").toLowerCase()} #srilanka #nutrisri`;
+  const companyTag = `#${company.replace(/\s+/g, "").toLowerCase()}`;
+  const benefits = product.benefits.slice(0, 3).map((b) => `• ${b}`).join("\n");
+
+  const useHashtags = platform !== "whatsapp";
+  const hashtagBlock = useHashtags ? `\n\n${ht} ${companyTag} #srilanka #nutrisri` : "";
+
+  if (tone === "friendly") {
+    return `Hey there! 👋 Looking for a healthy snack? 🌟\n\n${product.name} is here! 🥳\n\n${product.description}\n\nWhy you'll love it:\n${benefits}\n\n💰 Just Rs. ${price.toLocaleString()} / ${weight}\n\n🛒 Grab yours: ${website}\n📦 Island-wide delivery${hashtagBlock}`;
+  }
+  if (tone === "promotional") {
+    return `🔥 LIMITED TIME OFFER! 🔥\n\n${product.name}\n\n${product.description}\n\n✅ Benefits:\n${benefits}\n\n💥 Special Price: Rs. ${price.toLocaleString()} / ${weight}\nDon't miss out! Order NOW 👇\n🛒 ${website}\n📦 Fast Delivery Island-wide${hashtagBlock}`;
+  }
+  // default / professional
+  return `✨ ${product.name} — Now Available!\n\n${product.description}\n\n🌟 Key Benefits:\n${benefits}\n\n💰 Price: Rs. ${price.toLocaleString()} / ${weight}\n\n🛒 Order Now: ${website}\n📦 Fast Delivery Island-wide${hashtagBlock}`;
 }
 
 interface PostPreviewProps {
@@ -55,6 +67,9 @@ interface PostPreviewProps {
   price: number;
   oldPrice: number;
   saving: number;
+  postFormat: "square" | "story";
+  platform: string;
+  captionTone: string;
 }
 
 export default function PostPreview({
@@ -71,13 +86,27 @@ export default function PostPreview({
   price,
   oldPrice,
   saving,
+  postFormat,
+  platform,
+  captionTone,
 }: PostPreviewProps) {
   const qrRef = useRef<HTMLDivElement>(null);
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [bgRemovedUrl, setBgRemovedUrl] = useState<string | null>(null);
+  const [imageIdx, setImageIdx] = useState(0);
 
   const company = companyName || "GT Nutri Bites";
   const website = websiteUrl || "gt-nutri-bites.github.io";
+
+  // Reset image index when product changes
+  useEffect(() => {
+    setImageIdx(0);
+  }, [product.id]);
+
+  // Resolve the selected image URL from the product's images array
+  const selectedImageUrl = (product.images && product.images[imageIdx])
+    ? product.images[imageIdx]
+    : product.image;
 
   // Parse calorie parts
   const calParts = product.nutrition.calories.split(" ");
@@ -111,10 +140,10 @@ export default function PostPreview({
     return () => { cancelled = true; };
   }, [website]);
 
-  // Try background removal via Cloudinary
+  // Try background removal via Cloudinary on selected image
   useEffect(() => {
     setBgRemovedUrl(null);
-    const bgRemovedImgUrl = product.image.replace(
+    const bgRemovedImgUrl = selectedImageUrl.replace(
       "/upload/",
       "/upload/e_background_removal/"
     );
@@ -123,14 +152,16 @@ export default function PostPreview({
     testImg.onload = () => setBgRemovedUrl(bgRemovedImgUrl);
     testImg.onerror = () => setBgRemovedUrl(null);
     testImg.src = bgRemovedImgUrl;
-  }, [product.image]);
+  }, [selectedImageUrl]);
 
-  const displayImage = bgRemovedUrl || product.image;
+  const displayImage = bgRemovedUrl || selectedImageUrl;
 
   const caption = useMemo(
-    () => generateCaption(product, price, weight, website, company),
-    [product, price, weight, website, company]
+    () => generateCaption(product, price, weight, website, company, platform, captionTone),
+    [product, price, weight, website, company, platform, captionTone]
   );
+
+  const hasMultipleImages = product.images && product.images.length > 1;
 
   return (
     <div
@@ -146,7 +177,7 @@ export default function PostPreview({
     >
       <div style={{ width: "100%", maxWidth: 540 }}>
         {/* Post Preview */}
-        <div id="post-canvas-wrap">
+        <div id="post-canvas-wrap" className={postFormat === "story" ? "format-story" : ""}>
           <div id="post-canvas" className={`post-inner tmpl-${tmpl} animate-up`} key={`${product.id}-${tmpl}`}>
             <div className="post-bg-deco" />
             <div className="post-geo" />
@@ -228,7 +259,7 @@ export default function PostPreview({
               <img
                 className="post-img"
                 src={displayImage}
-                data-original={product.image}
+                data-original={selectedImageUrl}
                 crossOrigin="anonymous"
                 alt={product.name}
               />
@@ -359,10 +390,24 @@ export default function PostPreview({
           </div>
         </div>
 
+        {/* Multi-image selector dots */}
+        {hasMultipleImages && (
+          <div className="img-selector">
+            {product.images.map((_, i) => (
+              <button
+                key={i}
+                className={`img-dot${i === imageIdx ? " active" : ""}`}
+                onClick={() => setImageIdx(i)}
+                aria-label={`Image ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+
         {/* Caption area */}
         <div
           style={{
-            marginTop: 20,
+            marginTop: hasMultipleImages ? 12 : 20,
             background: "#1a1a1a",
             border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: 10,
@@ -402,8 +447,12 @@ export default function PostPreview({
           }}
         >
           {[
-            "📐 1080 × 1080 px",
-            "📱 Instagram / Facebook",
+            postFormat === "story" ? "📐 1080 × 1350 px" : "📐 1080 × 1080 px",
+            platform === "instagram"
+              ? "📱 Instagram"
+              : platform === "facebook"
+              ? "📘 Facebook"
+              : "💬 WhatsApp",
             "🎨 High Quality PNG",
           ].map((label) => (
             <div
@@ -431,3 +480,4 @@ export default function PostPreview({
     </div>
   );
 }
+

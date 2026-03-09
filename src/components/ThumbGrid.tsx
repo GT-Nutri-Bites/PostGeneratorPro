@@ -3,9 +3,11 @@ import type { Product } from "@/data/types";
 /* eslint-disable @next/next/no-img-element */
 export default function ThumbGrid({
   products,
+  selectedProduct,
   onSelectProduct,
 }: {
   products: Product[];
+  selectedProduct: Product;
   onSelectProduct: (p: Product) => void;
 }) {
   return (
@@ -25,7 +27,7 @@ export default function ThumbGrid({
         {products.map((p) => (
           <div
             key={p.id}
-            className="thumb-card"
+            className={`thumb-card${p.id === selectedProduct.id ? " active" : ""}`}
             onClick={() => onSelectProduct(p)}
           >
             <img
@@ -67,3 +69,4 @@ export default function ThumbGrid({
     </div>
   );
 }
+
