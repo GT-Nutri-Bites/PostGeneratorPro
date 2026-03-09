@@ -1070,11 +1070,10 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     const exportSize = 1080;
     
     // Store original dimensions to restore after export
-    const originalWidth = canvas.style.width;
-    const originalHeight = canvas.style.height;
-    const wrapOriginalWidth = wrap.style.width;
-    const wrapOriginalHeight = wrap.style.height;
-    const wrapOriginalMaxWidth = wrap.style.maxWidth;
+    const originalStyles = {
+      canvas: { width: canvas.style.width, height: canvas.style.height },
+      wrap: { width: wrap.style.width, height: wrap.style.height, maxWidth: wrap.style.maxWidth }
+    };
     
     // Temporarily set exact dimensions for export to ensure proper rendering
     wrap.style.width = exportSize + 'px';
@@ -1083,49 +1082,55 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     canvas.style.width = exportSize + 'px';
     canvas.style.height = exportSize + 'px';
     
-    // Small delay to allow browser to reflow at new dimensions
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Wait for browser reflow using requestAnimationFrame for reliability
+    await new Promise(resolve => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    });
 
-    let result;
     try {
-      result = await html2canvas(canvas, {
-        width: exportSize,
-        height: exportSize,
-        scale: 1,  // Render at native resolution, no upscaling
-        useCORS: true,
-        allowTaint: false,
-        logging: false,
-        backgroundColor: null,
-        windowWidth: exportSize,   // Set viewport context for clamp() calculations
-        windowHeight: exportSize,
-      });
-    } catch (corsError) {
-      // Fallback: allow tainted canvas for degraded-but-functional export when CORS fails
-      result = await html2canvas(canvas, {
-        width: exportSize,
-        height: exportSize,
-        scale: 1,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-        backgroundColor: null,
-        windowWidth: exportSize,
-        windowHeight: exportSize,
-      });
-    }
-    
-    // Restore original dimensions
-    wrap.style.width = wrapOriginalWidth;
-    wrap.style.height = wrapOriginalHeight;
-    wrap.style.maxWidth = wrapOriginalMaxWidth;
-    canvas.style.width = originalWidth;
-    canvas.style.height = originalHeight;
+      let result;
+      try {
+        result = await html2canvas(canvas, {
+          width: exportSize,
+          height: exportSize,
+          scale: 1,  // Render at native resolution, no upscaling
+          useCORS: true,
+          allowTaint: false,
+          logging: false,
+          backgroundColor: null,
+          windowWidth: exportSize,   // Set viewport context for clamp() calculations
+          windowHeight: exportSize,
+        });
+      } catch (corsError) {
+        // Fallback: allow tainted canvas for degraded-but-functional export when CORS fails
+        result = await html2canvas(canvas, {
+          width: exportSize,
+          height: exportSize,
+          scale: 1,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          backgroundColor: null,
+          windowWidth: exportSize,
+          windowHeight: exportSize,
+        });
+      }
 
-    const link = document.createElement('a');
-    link.download = `${state.product.name.replace(/\s+/g,'_')}_${state.weight}_post.png`;
-    link.href = result.toDataURL('image/png');
-    link.click();
-    showToast('✓ Post downloaded!');
+      const link = document.createElement('a');
+      link.download = `${state.product.name.replace(/\s+/g,'_')}_${state.weight}_post.png`;
+      link.href = result.toDataURL('image/png');
+      link.click();
+      showToast('✓ Post downloaded!');
+    } finally {
+      // Always restore original dimensions, even if export fails
+      wrap.style.width = originalStyles.wrap.width;
+      wrap.style.height = originalStyles.wrap.height;
+      wrap.style.maxWidth = originalStyles.wrap.maxWidth;
+      canvas.style.width = originalStyles.canvas.width;
+      canvas.style.height = originalStyles.canvas.height;
+    }
   } catch(e) {
     showToast('⚠ Error generating image. Try again.');
     console.error(e);
