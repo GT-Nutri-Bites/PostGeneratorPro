@@ -1065,30 +1065,61 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
   try {
     const canvas = document.getElementById('post-canvas');
     const wrap = document.getElementById('post-canvas-wrap');
-    const size = wrap.offsetWidth;
-    const exportScale = Math.min(Math.ceil(1080 / size), 3);
+    
+    // Export at native 1080x1080 resolution for perfect 1:1 aspect ratio
+    const exportSize = 1080;
+    
+    // Store original dimensions to restore after export
+    const originalWidth = canvas.style.width;
+    const originalHeight = canvas.style.height;
+    const wrapOriginalWidth = wrap.style.width;
+    const wrapOriginalHeight = wrap.style.height;
+    const wrapOriginalMaxWidth = wrap.style.maxWidth;
+    
+    // Temporarily set exact dimensions for export to ensure proper rendering
+    wrap.style.width = exportSize + 'px';
+    wrap.style.height = exportSize + 'px';
+    wrap.style.maxWidth = exportSize + 'px';
+    canvas.style.width = exportSize + 'px';
+    canvas.style.height = exportSize + 'px';
+    
+    // Small delay to allow browser to reflow at new dimensions
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     let result;
     try {
       result = await html2canvas(canvas, {
-        width: size, height: size,
-        scale: exportScale,
+        width: exportSize,
+        height: exportSize,
+        scale: 1,  // Render at native resolution, no upscaling
         useCORS: true,
         allowTaint: false,
         logging: false,
         backgroundColor: null,
+        windowWidth: exportSize,   // Set viewport context for clamp() calculations
+        windowHeight: exportSize,
       });
     } catch (corsError) {
       // Fallback: allow tainted canvas for degraded-but-functional export when CORS fails
       result = await html2canvas(canvas, {
-        width: size, height: size,
-        scale: exportScale,
+        width: exportSize,
+        height: exportSize,
+        scale: 1,
         useCORS: true,
         allowTaint: true,
         logging: false,
         backgroundColor: null,
+        windowWidth: exportSize,
+        windowHeight: exportSize,
       });
     }
+    
+    // Restore original dimensions
+    wrap.style.width = wrapOriginalWidth;
+    wrap.style.height = wrapOriginalHeight;
+    wrap.style.maxWidth = wrapOriginalMaxWidth;
+    canvas.style.width = originalWidth;
+    canvas.style.height = originalHeight;
 
     const link = document.createElement('a');
     link.download = `${state.product.name.replace(/\s+/g,'_')}_${state.weight}_post.png`;
