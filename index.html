@@ -1179,7 +1179,7 @@ function generateExportQR(url) {
 // Format nutrition value for export (unit rendered in DM Sans, not Bebas Neue)
 function formatNutValExport(val) {
   var normalized = val.trim().replace(/\s+/g, '');
-  var match = normalized.match(/^([\d.]+)(.*)$/);
+  var match = normalized.match(/^(\d+(?:\.\d+)?)(.*)$/);
   if (match && match[2]) {
     return match[1] + '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.65em;font-weight:500;line-height:1;">' + match[2] + '</span>';
   }
@@ -1376,7 +1376,7 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     const productImgUrl = bgRemovalCache[p.image] || p.image;
     const [imgDataUrl, qrDataUrl] = await Promise.all([
       loadImageAsDataUrl(productImgUrl),
-      generateExportQR('https://' + website.replace('https://','').replace('http://',''))
+      generateExportQR('https://' + website.replace(/^https?:\/\//, ''))
     ]);
 
     // Build the dedicated 1080×1080 export element
@@ -1416,7 +1416,7 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
         windowWidth: 1200,
         windowHeight: 1200,
       });
-    } catch (corsErr) {
+    } catch (_corsErr) {
       // Fallback: allow tainted canvas if strict CORS fails
       result = await html2canvas(exportEl, {
         scale: 1,
