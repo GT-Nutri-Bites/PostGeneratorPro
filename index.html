@@ -241,33 +241,37 @@
     line-height: 1.2;
   }
 
-  /* Product image */
+  /* Product image — bottom-anchored for a natural "sitting on surface" viewpoint */
   .post-img-zone {
     flex: 1 1 auto;
     min-height: 0;
-    max-height: 45%;
+    max-height: 50%;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     position: relative;
     padding: 44px 20px 0;
   }
+  /* Ground glow — wide elliptical spotlight beneath the product to suggest depth */
   .post-img-glow {
     position: absolute;
-    width: 65%;
-    padding-bottom: 65%;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 66%;
+    aspect-ratio: 2.5 / 1;
     border-radius: 50%;
-    filter: blur(40px);
-    opacity: 0.25;
-    background: radial-gradient(circle, rgba(255,235,205,0.3), transparent 70%);
+    filter: blur(32px);
+    opacity: 0.5;
+    background: radial-gradient(ellipse, rgba(255,235,205,0.55), transparent 70%);
   }
   .post-img {
-    width: clamp(180px, 50%, 300px);
-    height: clamp(180px, 50%, 300px);
+    width: clamp(200px, 58%, 340px);
+    height: clamp(200px, 58%, 340px);
     object-fit: contain;
     position: relative;
     z-index: 2;
-    filter: drop-shadow(0 12px 24px rgba(0,0,0,0.35));
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.4)) drop-shadow(0 20px 40px rgba(0,0,0,0.28));
     transition: transform 0.3s ease;
   }
 
@@ -1137,6 +1141,13 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
         // Replace product image src with pre-loaded data-URI (avoids CORS)
         const cImg = cw.querySelector('.post-img');
         if (cImg) cImg.src = imgDataUrl;
+
+        // Ensure image zone aligns product to the bottom for the ground-viewpoint effect
+        const imgZone = cw.querySelector('.post-img-zone');
+        if (imgZone) {
+          imgZone.style.alignItems = 'flex-end';
+          imgZone.style.justifyContent = 'center';
+        }
 
         // Remove shimmer animation — html2canvas freezes it mid-frame
         const shimmer = cw.querySelector('.post-shimmer');
