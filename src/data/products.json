@@ -13,33 +13,33 @@
       "name": "Premium California Almonds",
       "category": "Organic Almonds",
       "type": "nuts",
-      "price": 455,
-      "oldPrice": 515,
+      "price": 438,
+      "oldPrice": 498,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 455,
-          "oldPrice": 515
+          "price": 438,
+          "oldPrice": 498
         },
         "250g": {
-          "price": 1095,
-          "oldPrice": 1245
+          "price": 1080,
+          "oldPrice": 1230
         },
         "500g": {
-          "price": 2165,
-          "oldPrice": 2465
+          "price": 2142,
+          "oldPrice": 2442
         },
         "750g": {
-          "price": 3215,
-          "oldPrice": 3665
+          "price": 3200,
+          "oldPrice": 3650
         },
         "1kg": {
-          "price": 4275,
-          "oldPrice": 4875
+          "price": 4260,
+          "oldPrice": 4860
         },
         "2kg": {
-          "price": 7015,
-          "oldPrice": 8015
+          "price": 7000,
+          "oldPrice": 8000
         }
       },
       "badge": "BEST SELLER",
@@ -57,7 +57,7 @@
         "protein": "18.45g",
         "fat": "58.51g",
         "carbs": "2.66g",
-        "fiber": "13.07g"
+        "fiber": "3.5g"
       },
       "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990975/Almond-1_ef2fsx.webp",
       "images": [
@@ -74,33 +74,33 @@
       "name": "Premium Pistachios",
       "category": "Organic Nuts",
       "type": "nuts",
-      "price": 695,
-      "oldPrice": 755,
+      "price": 678,
+      "oldPrice": 738,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 695,
-          "oldPrice": 755
+          "price": 678,
+          "oldPrice": 738
         },
         "250g": {
-          "price": 1695,
-          "oldPrice": 1845
+          "price": 1680,
+          "oldPrice": 1830
         },
         "500g": {
-          "price": 3365,
-          "oldPrice": 3665
+          "price": 3342,
+          "oldPrice": 3642
         },
         "750g": {
-          "price": 5015,
-          "oldPrice": 5465
+          "price": 5000,
+          "oldPrice": 5450
         },
         "1kg": {
-          "price": 6675,
-          "oldPrice": 7275
+          "price": 6660,
+          "oldPrice": 7260
         },
         "2kg": {
-          "price": 11015,
-          "oldPrice": 12015
+          "price": 11000,
+          "oldPrice": 12000
         }
       },
       "badge": "PREMIUM",
@@ -118,7 +118,7 @@
         "protein": "23.64g",
         "fat": "42.95g",
         "carbs": "15.06g",
-        "fiber": "10.45g"
+        "fiber": "3g"
       },
       "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990953/Pistachio-1_f129ja.webp",
       "images": [
@@ -135,33 +135,33 @@
       "name": "Sunflower Seeds (Without Shell)",
       "category": "Premium Seeds",
       "type": "seeds",
-      "price": 425,
-      "oldPrice": 515,
+      "price": 408,
+      "oldPrice": 498,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 425,
-          "oldPrice": 515
+          "price": 408,
+          "oldPrice": 498
         },
         "250g": {
-          "price": 1025,
-          "oldPrice": 1245
+          "price": 1006,
+          "oldPrice": 1230
         },
         "500g": {
-          "price": 2015,
-          "oldPrice": 2465
+          "price": 1992,
+          "oldPrice": 2442
         },
         "750g": {
-          "price": 2995,
-          "oldPrice": 3665
+          "price": 2976,
+          "oldPrice": 3650
         },
         "1kg": {
-          "price": 3975,
-          "oldPrice": 4875
+          "price": 3960,
+          "oldPrice": 4860
         },
         "2kg": {
-          "price": 6515,
-          "oldPrice": 8015
+          "price": 6500,
+          "oldPrice": 8000
         }
       },
       "badge": null,
@@ -179,7 +179,7 @@
         "protein": "23.53g",
         "fat": "42.95g",
         "carbs": "6.85g",
-        "fiber": "10.8g"
+        "fiber": "3g"
       },
       "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990949/Sunflower_Seeds-1_jow1jp.webp",
       "images": [
@@ -195,33 +195,33 @@
       "name": "Sunflower Seeds (With Shell)",
       "category": "Premium Seeds",
       "type": "seeds",
-      "price": 425,
-      "oldPrice": 515,
+      "price": 408,
+      "oldPrice": 498,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 425,
-          "oldPrice": 515
+          "price": 408,
+          "oldPrice": 498
         },
         "250g": {
-          "price": 1025,
-          "oldPrice": 1245
+          "price": 1006,
+          "oldPrice": 1230
         },
         "500g": {
-          "price": 2015,
-          "oldPrice": 2465
+          "price": 1992,
+          "oldPrice": 2442
         },
         "750g": {
-          "price": 2995,
-          "oldPrice": 3665
+          "price": 2976,
+          "oldPrice": 3650
         },
         "1kg": {
-          "price": 3975,
-          "oldPrice": 4875
+          "price": 3960,
+          "oldPrice": 4860
         },
         "2kg": {
-          "price": 6515,
-          "oldPrice": 8015
+          "price": 6500,
+          "oldPrice": 8000
         }
       },
       "badge": null,
@@ -239,7 +239,7 @@
         "protein": "23.53g",
         "fat": "42.95g",
         "carbs": "6.85g",
-        "fiber": "10.8g"
+        "fiber": "3g"
       },
       "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990970/Sunflower_Seeds_With_Shell_-1_vnslyp.webp",
       "images": [
@@ -256,33 +256,33 @@
       "name": "Pumpkin Seeds",
       "category": "Superfood Seeds",
       "type": "seeds",
-      "price": 425,
-      "oldPrice": 515,
+      "price": 408,
+      "oldPrice": 498,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 425,
-          "oldPrice": 515
+          "price": 408,
+          "oldPrice": 498
         },
         "250g": {
-          "price": 1025,
-          "oldPrice": 1245
+          "price": 1006,
+          "oldPrice": 1230
         },
         "500g": {
-          "price": 2015,
-          "oldPrice": 2465
+          "price": 1992,
+          "oldPrice": 2442
         },
         "750g": {
-          "price": 2995,
-          "oldPrice": 3665
+          "price": 2976,
+          "oldPrice": 3650
         },
         "1kg": {
-          "price": 3975,
-          "oldPrice": 4875
+          "price": 3960,
+          "oldPrice": 4860
         },
         "2kg": {
-          "price": 6515,
-          "oldPrice": 8015
+          "price": 6500,
+          "oldPrice": 8000
         }
       },
       "badge": null,
@@ -300,7 +300,7 @@
         "protein": "30.2g",
         "fat": "49.1g",
         "carbs": "10.7g",
-        "fiber": "6g"
+        "fiber": "1.7g"
       },
       "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990954/Pumpkin_Seeds-1_kah37m.webp",
       "images": [
@@ -316,33 +316,33 @@
       "name": "Mix Nuts, Seeds & Dried Fruits",
       "category": "Premium Mix",
       "type": "mix",
-      "price": 575,
-      "oldPrice": 635,
+      "price": 558,
+      "oldPrice": 618,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 575,
-          "oldPrice": 635
+          "price": 558,
+          "oldPrice": 618
         },
         "250g": {
-          "price": 1395,
-          "oldPrice": 1545
+          "price": 1380,
+          "oldPrice": 1530
         },
         "500g": {
-          "price": 2765,
-          "oldPrice": 3065
+          "price": 2742,
+          "oldPrice": 3042
         },
         "750g": {
-          "price": 4115,
-          "oldPrice": 4565
+          "price": 4100,
+          "oldPrice": 4550
         },
         "1kg": {
-          "price": 5475,
-          "oldPrice": 6075
+          "price": 5460,
+          "oldPrice": 6060
         },
         "2kg": {
-          "price": 9015,
-          "oldPrice": 10015
+          "price": 9000,
+          "oldPrice": 10000
         }
       },
       "badge": "ORGANIC",
@@ -360,7 +360,7 @@
         "protein": "15g",
         "fat": "25g",
         "carbs": "55g",
-        "fiber": "12.3g"
+        "fiber": "2.5g"
       },
       "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Mixed_Nuts_and_Seeds-1_hwjitv.webp",
       "images": [
@@ -377,33 +377,33 @@
       "name": "Black Raisins",
       "category": "Dried Fruits",
       "type": "dried_fruits",
-      "price": 515,
-      "oldPrice": 575,
+      "price": 498,
+      "oldPrice": 558,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 515,
-          "oldPrice": 575
+          "price": 498,
+          "oldPrice": 558
         },
         "250g": {
-          "price": 1245,
-          "oldPrice": 1395
+          "price": 1230,
+          "oldPrice": 1380
         },
         "500g": {
-          "price": 2465,
-          "oldPrice": 2765
+          "price": 2442,
+          "oldPrice": 2742
         },
         "750g": {
-          "price": 3665,
-          "oldPrice": 4115
+          "price": 3650,
+          "oldPrice": 4100
         },
         "1kg": {
-          "price": 4875,
-          "oldPrice": 5475
+          "price": 4860,
+          "oldPrice": 5460
         },
         "2kg": {
-          "price": 8015,
-          "oldPrice": 9015
+          "price": 8000,
+          "oldPrice": 9000
         }
       },
       "badge": "NEW",
@@ -421,7 +421,7 @@
         "protein": "2.65g",
         "fat": "0.37g",
         "carbs": "71.83g",
-        "fiber": "3.85g"
+        "fiber": "3.7g"
       },
       "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990966/Black_Rasins-1_chupha.webp",
       "images": [
@@ -438,33 +438,33 @@
       "name": "Premium Dried Fruits",
       "category": "Dried Fruits",
       "type": "dried_fruits",
-      "price": 635,
-      "oldPrice": 695,
+      "price": 618,
+      "oldPrice": 678,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 635,
-          "oldPrice": 695
+          "price": 618,
+          "oldPrice": 678
         },
         "250g": {
-          "price": 1545,
-          "oldPrice": 1695
+          "price": 1530,
+          "oldPrice": 1680
         },
         "500g": {
-          "price": 3065,
-          "oldPrice": 3365
+          "price": 3042,
+          "oldPrice": 3342
         },
         "750g": {
-          "price": 4565,
-          "oldPrice": 5015
+          "price": 4550,
+          "oldPrice": 5000
         },
         "1kg": {
-          "price": 6075,
-          "oldPrice": 6675
+          "price": 6060,
+          "oldPrice": 6660
         },
         "2kg": {
-          "price": 10015,
-          "oldPrice": 11015
+          "price": 10000,
+          "oldPrice": 11000
         }
       },
       "badge": "NEW",
@@ -482,7 +482,7 @@
         "protein": "3.5g",
         "fat": "1g",
         "carbs": "85g",
-        "fiber": "3.5g"
+        "fiber": "5g"
       },
       "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990959/Dried_Fruits-1_tgur8j.webp",
       "images": [
@@ -499,33 +499,33 @@
       "name": "Golden Raisins",
       "category": "Dried Fruits",
       "type": "dried_fruits",
-      "price": 635,
-      "oldPrice": 695,
+      "price": 618,
+      "oldPrice": 678,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 635,
-          "oldPrice": 695
+          "price": 618,
+          "oldPrice": 678
         },
         "250g": {
-          "price": 1545,
-          "oldPrice": 1695
+          "price": 1530,
+          "oldPrice": 1680
         },
         "500g": {
-          "price": 3065,
-          "oldPrice": 3365
+          "price": 3042,
+          "oldPrice": 3342
         },
         "750g": {
-          "price": 4565,
-          "oldPrice": 5015
+          "price": 4550,
+          "oldPrice": 5000
         },
         "1kg": {
-          "price": 6075,
-          "oldPrice": 6675
+          "price": 6060,
+          "oldPrice": 6660
         },
         "2kg": {
-          "price": 10015,
-          "oldPrice": 11015
+          "price": 10000,
+          "oldPrice": 11000
         }
       },
       "badge": "NEW",
@@ -543,7 +543,7 @@
         "protein": "2.54g",
         "fat": "0.32g",
         "carbs": "68.74g",
-        "fiber": "4.36g"
+        "fiber": "3.7g"
       },
       "image": "https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Golden_Rasins-1_qlg2mk.webp",
       "images": [
