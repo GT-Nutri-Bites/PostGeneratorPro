@@ -13,33 +13,33 @@
       "name": "Premium California Almonds",
       "category": "Organic Almonds",
       "type": "nuts",
-      "price": 440,
-      "oldPrice": 500,
+      "price": 455,
+      "oldPrice": 515,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 440,
-          "oldPrice": 500
+          "price": 455,
+          "oldPrice": 515
         },
         "250g": {
-          "price": 1080,
-          "oldPrice": 1230
+          "price": 1095,
+          "oldPrice": 1245
         },
         "500g": {
-          "price": 2150,
-          "oldPrice": 2450
+          "price": 2165,
+          "oldPrice": 2465
         },
         "750g": {
-          "price": 3200,
-          "oldPrice": 3650
+          "price": 3215,
+          "oldPrice": 3665
         },
         "1kg": {
-          "price": 4260,
-          "oldPrice": 4860
+          "price": 4275,
+          "oldPrice": 4875
         },
         "2kg": {
-          "price": 7000,
-          "oldPrice": 8000
+          "price": 7015,
+          "oldPrice": 8015
         }
       },
       "badge": "BEST SELLER",
@@ -74,33 +74,33 @@
       "name": "Premium Pistachios",
       "category": "Organic Nuts",
       "type": "nuts",
-      "price": 680,
-      "oldPrice": 740,
+      "price": 695,
+      "oldPrice": 755,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 680,
-          "oldPrice": 740
+          "price": 695,
+          "oldPrice": 755
         },
         "250g": {
-          "price": 1680,
-          "oldPrice": 1830
+          "price": 1695,
+          "oldPrice": 1845
         },
         "500g": {
-          "price": 3350,
-          "oldPrice": 3650
+          "price": 3365,
+          "oldPrice": 3665
         },
         "750g": {
-          "price": 5000,
-          "oldPrice": 5450
+          "price": 5015,
+          "oldPrice": 5465
         },
         "1kg": {
-          "price": 6660,
-          "oldPrice": 7260
+          "price": 6675,
+          "oldPrice": 7275
         },
         "2kg": {
-          "price": 11000,
-          "oldPrice": 12000
+          "price": 11015,
+          "oldPrice": 12015
         }
       },
       "badge": "PREMIUM",
@@ -135,33 +135,33 @@
       "name": "Sunflower Seeds (Without Shell)",
       "category": "Premium Seeds",
       "type": "seeds",
-      "price": 410,
-      "oldPrice": 500,
+      "price": 425,
+      "oldPrice": 515,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 410,
-          "oldPrice": 500
+          "price": 425,
+          "oldPrice": 515
         },
         "250g": {
-          "price": 1010,
-          "oldPrice": 1230
+          "price": 1025,
+          "oldPrice": 1245
         },
         "500g": {
-          "price": 2000,
-          "oldPrice": 2450
+          "price": 2015,
+          "oldPrice": 2465
         },
         "750g": {
-          "price": 2980,
-          "oldPrice": 3650
+          "price": 2995,
+          "oldPrice": 3665
         },
         "1kg": {
-          "price": 3960,
-          "oldPrice": 4860
+          "price": 3975,
+          "oldPrice": 4875
         },
         "2kg": {
-          "price": 6500,
-          "oldPrice": 8000
+          "price": 6515,
+          "oldPrice": 8015
         }
       },
       "badge": null,
@@ -195,33 +195,33 @@
       "name": "Sunflower Seeds (With Shell)",
       "category": "Premium Seeds",
       "type": "seeds",
-      "price": 410,
-      "oldPrice": 500,
+      "price": 425,
+      "oldPrice": 515,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 410,
-          "oldPrice": 500
+          "price": 425,
+          "oldPrice": 515
         },
         "250g": {
-          "price": 1010,
-          "oldPrice": 1230
+          "price": 1025,
+          "oldPrice": 1245
         },
         "500g": {
-          "price": 2000,
-          "oldPrice": 2450
+          "price": 2015,
+          "oldPrice": 2465
         },
         "750g": {
-          "price": 2980,
-          "oldPrice": 3650
+          "price": 2995,
+          "oldPrice": 3665
         },
         "1kg": {
-          "price": 3960,
-          "oldPrice": 4860
+          "price": 3975,
+          "oldPrice": 4875
         },
         "2kg": {
-          "price": 6500,
-          "oldPrice": 8000
+          "price": 6515,
+          "oldPrice": 8015
         }
       },
       "badge": null,
@@ -256,33 +256,33 @@
       "name": "Pumpkin Seeds",
       "category": "Superfood Seeds",
       "type": "seeds",
-      "price": 410,
-      "oldPrice": 500,
+      "price": 425,
+      "oldPrice": 515,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 410,
-          "oldPrice": 500
+          "price": 425,
+          "oldPrice": 515
         },
         "250g": {
-          "price": 1010,
-          "oldPrice": 1230
+          "price": 1025,
+          "oldPrice": 1245
         },
         "500g": {
-          "price": 2000,
-          "oldPrice": 2450
+          "price": 2015,
+          "oldPrice": 2465
         },
         "750g": {
-          "price": 2980,
-          "oldPrice": 3650
+          "price": 2995,
+          "oldPrice": 3665
         },
         "1kg": {
-          "price": 3960,
-          "oldPrice": 4860
+          "price": 3975,
+          "oldPrice": 4875
         },
         "2kg": {
-          "price": 6500,
-          "oldPrice": 8000
+          "price": 6515,
+          "oldPrice": 8015
         }
       },
       "badge": null,
@@ -316,33 +316,33 @@
       "name": "Mix Nuts, Seeds & Dried Fruits",
       "category": "Premium Mix",
       "type": "mix",
-      "price": 560,
-      "oldPrice": 620,
+      "price": 575,
+      "oldPrice": 635,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 560,
-          "oldPrice": 620
+          "price": 575,
+          "oldPrice": 635
         },
         "250g": {
-          "price": 1380,
-          "oldPrice": 1530
+          "price": 1395,
+          "oldPrice": 1545
         },
         "500g": {
-          "price": 2750,
-          "oldPrice": 3050
+          "price": 2765,
+          "oldPrice": 3065
         },
         "750g": {
-          "price": 4100,
-          "oldPrice": 4550
+          "price": 4115,
+          "oldPrice": 4565
         },
         "1kg": {
-          "price": 5460,
-          "oldPrice": 6060
+          "price": 5475,
+          "oldPrice": 6075
         },
         "2kg": {
-          "price": 9000,
-          "oldPrice": 10000
+          "price": 9015,
+          "oldPrice": 10015
         }
       },
       "badge": "ORGANIC",
@@ -377,33 +377,33 @@
       "name": "Black Raisins",
       "category": "Dried Fruits",
       "type": "dried_fruits",
-      "price": 500,
-      "oldPrice": 560,
+      "price": 515,
+      "oldPrice": 575,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 500,
-          "oldPrice": 560
+          "price": 515,
+          "oldPrice": 575
         },
         "250g": {
-          "price": 1230,
-          "oldPrice": 1380
+          "price": 1245,
+          "oldPrice": 1395
         },
         "500g": {
-          "price": 2450,
-          "oldPrice": 2750
+          "price": 2465,
+          "oldPrice": 2765
         },
         "750g": {
-          "price": 3650,
-          "oldPrice": 4100
+          "price": 3665,
+          "oldPrice": 4115
         },
         "1kg": {
-          "price": 4860,
-          "oldPrice": 5460
+          "price": 4875,
+          "oldPrice": 5475
         },
         "2kg": {
-          "price": 8000,
-          "oldPrice": 9000
+          "price": 8015,
+          "oldPrice": 9015
         }
       },
       "badge": "NEW",
@@ -438,33 +438,33 @@
       "name": "Premium Dried Fruits",
       "category": "Dried Fruits",
       "type": "dried_fruits",
-      "price": 620,
-      "oldPrice": 680,
+      "price": 635,
+      "oldPrice": 695,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 620,
-          "oldPrice": 680
+          "price": 635,
+          "oldPrice": 695
         },
         "250g": {
-          "price": 1530,
-          "oldPrice": 1680
+          "price": 1545,
+          "oldPrice": 1695
         },
         "500g": {
-          "price": 3050,
-          "oldPrice": 3350
+          "price": 3065,
+          "oldPrice": 3365
         },
         "750g": {
-          "price": 4550,
-          "oldPrice": 5000
+          "price": 4565,
+          "oldPrice": 5015
         },
         "1kg": {
-          "price": 6060,
-          "oldPrice": 6660
+          "price": 6075,
+          "oldPrice": 6675
         },
         "2kg": {
-          "price": 10000,
-          "oldPrice": 11000
+          "price": 10015,
+          "oldPrice": 11015
         }
       },
       "badge": "NEW",
@@ -499,33 +499,33 @@
       "name": "Golden Raisins",
       "category": "Dried Fruits",
       "type": "dried_fruits",
-      "price": 620,
-      "oldPrice": 680,
+      "price": 635,
+      "oldPrice": 695,
       "weight": "100g",
       "weightVariants": {
         "100g": {
-          "price": 620,
-          "oldPrice": 680
+          "price": 635,
+          "oldPrice": 695
         },
         "250g": {
-          "price": 1530,
-          "oldPrice": 1680
+          "price": 1545,
+          "oldPrice": 1695
         },
         "500g": {
-          "price": 3050,
-          "oldPrice": 3350
+          "price": 3065,
+          "oldPrice": 3365
         },
         "750g": {
-          "price": 4550,
-          "oldPrice": 5000
+          "price": 4565,
+          "oldPrice": 5015
         },
         "1kg": {
-          "price": 6060,
-          "oldPrice": 6660
+          "price": 6075,
+          "oldPrice": 6675
         },
         "2kg": {
-          "price": 10000,
-          "oldPrice": 11000
+          "price": 10015,
+          "oldPrice": 11015
         }
       },
       "badge": "NEW",
