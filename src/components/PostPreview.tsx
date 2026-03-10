@@ -250,6 +250,7 @@ export default function PostPreview({
                         style={{
                           fontSize: "clamp(6px,1vw,8px)",
                           marginTop: 1,
+                          textTransform: "none",
                         }}
                       >
                         {calServing}
