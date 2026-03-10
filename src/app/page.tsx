@@ -35,6 +35,8 @@ export default function Home() {
   const [postFormat, setPostFormat] = useState<"square" | "story">("square");
   const [platform, setPlatform] = useState("instagram");
   const [captionTone, setCaptionTone] = useState("professional");
+  const [priceOverride, setPriceOverride] = useState(false);
+  const [manualPrice, setManualPrice] = useState("");
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "" });
 
@@ -56,7 +58,14 @@ export default function Home() {
     product.weightVariants && product.weightVariants[weight]
       ? product.weightVariants[weight].oldPrice
       : product.oldPrice;
-  const saving = oldPrice - price;
+
+  // Effective price: use manual override when enabled and a valid number is entered
+  const parsedManualPrice = parseFloat(manualPrice);
+  const effectivePrice =
+    priceOverride && manualPrice.trim() !== "" && !isNaN(parsedManualPrice)
+      ? parsedManualPrice
+      : price;
+  const saving = oldPrice - effectivePrice;
 
   // Available weights for selected product
   const availableWeights = product.weightVariants
@@ -106,9 +115,13 @@ export default function Home() {
           setLoading={setLoading}
           showToast={showToast}
           product={product}
-          price={price}
+          price={effectivePrice}
           oldPrice={oldPrice}
           saving={saving}
+          priceOverride={priceOverride}
+          onPriceOverrideChange={setPriceOverride}
+          manualPrice={manualPrice}
+          onManualPriceChange={setManualPrice}
         />
 
         <PostPreview
@@ -122,7 +135,7 @@ export default function Home() {
           showBenefits={showBenefits}
           showOldPrice={showOldPrice}
           showQR={showQR}
-          price={price}
+          price={effectivePrice}
           oldPrice={oldPrice}
           saving={saving}
           postFormat={postFormat}
