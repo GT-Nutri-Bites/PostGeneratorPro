@@ -243,7 +243,7 @@ export default function PostPreview({
                       className="post-nut-val"
                       dangerouslySetInnerHTML={{ __html: calValue }}
                     />
-                    <div className="post-nut-key">Kcal</div>
+                    <div className="post-nut-key">kcal</div>
                     {calServing && (
                       <div
                         className="post-nut-key"
