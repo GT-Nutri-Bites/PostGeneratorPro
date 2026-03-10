@@ -59,6 +59,10 @@ interface SidebarProps {
   price: number;
   oldPrice: number;
   saving: number;
+  priceOverride: boolean;
+  onPriceOverrideChange: (v: boolean) => void;
+  manualPrice: string;
+  onManualPriceChange: (v: string) => void;
 }
 
 export default function Sidebar({
@@ -95,6 +99,10 @@ export default function Sidebar({
   product,
   price,
   saving,
+  priceOverride,
+  onPriceOverrideChange,
+  manualPrice,
+  onManualPriceChange,
 }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -364,6 +372,41 @@ export default function Sidebar({
             </label>
           ))}
         </div>
+      </div>
+
+      {/* Price Override */}
+      <div className="ctrl-section">
+        <div className="ctrl-label">💰 Price Override</div>
+        <label
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            cursor: "pointer",
+            fontSize: 12,
+            color: "#ccc",
+            marginBottom: priceOverride ? 8 : 0,
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={priceOverride}
+            onChange={(e) => onPriceOverrideChange(e.target.checked)}
+            style={{ accentColor: "var(--amber)" }}
+          />
+          Override price manually
+        </label>
+        {priceOverride && (
+          <input
+            className="ctrl-input"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Enter price (Rs.)"
+            value={manualPrice}
+            onChange={(e) => onManualPriceChange(e.target.value)}
+          />
+        )}
       </div>
 
       {/* Caption Tone */}
