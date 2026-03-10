@@ -978,7 +978,7 @@ async function renderPost() {
         <div class="post-nut-item">
           <div class="post-nut-val">${calValue}</div>
           <div class="post-nut-key">kcal</div>
-          ${calServing ? `<div class="post-nut-key" style="font-size:clamp(6px,1vw,8px);margin-top:1px">${calServing}</div>` : ''}
+          ${calServing ? `<div class="post-nut-key" style="font-size:clamp(6px,1vw,8px);margin-top:1px;text-transform:none">${calServing}</div>` : ''}
         </div>
         <div class="post-nut-item">
           <div class="post-nut-val">${formatNutVal(p.nutrition.protein)}</div>
