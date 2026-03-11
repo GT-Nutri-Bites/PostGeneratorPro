@@ -25,7 +25,9 @@ function formatNutVal(val: string): string {
 interface PostPreviewProps {
   product: Product;
   weight: string;
-  tmpl: number;
+  tmpl: number | "custom";
+  customBgColor?: string;
+  customAccentColor?: string;
   companyName: string;
   websiteUrl: string;
   tagline: string;
@@ -41,10 +43,52 @@ interface PostPreviewProps {
   captionTone: string;
 }
 
+// Helper: convert hex color to {r,g,b}
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  const h = hex.replace("#", "");
+  return {
+    r: parseInt(h.slice(0, 2), 16),
+    g: parseInt(h.slice(2, 4), 16),
+    b: parseInt(h.slice(4, 6), 16),
+  };
+}
+
+// Helper: shade a hex color by a factor (< 1 darkens, > 1 lightens)
+function shadeHex(hex: string, factor: number): string {
+  const { r, g, b } = hexToRgb(hex);
+  const clamp = (v: number) => Math.max(0, Math.min(255, Math.round(v)));
+  return (
+    "#" +
+    [clamp(r * factor), clamp(g * factor), clamp(b * factor)]
+      .map((v) => v.toString(16).padStart(2, "0"))
+      .join("")
+  );
+}
+
+// Compute derived colors for the custom template
+function computeCustomColors(bgColor: string, accentColor: string) {
+  const { r: ar, g: ag, b: ab } = hexToRgb(accentColor);
+  const bgDark = shadeHex(bgColor, 0.55);
+  const bgLight = shadeHex(bgColor, 1.5);
+  const accentLight = shadeHex(accentColor, 1.65);
+  const accentDark = shadeHex(accentColor, 0.75);
+  return {
+    canvasBg: `linear-gradient(145deg, ${bgDark} 0%, ${bgColor} 40%, ${bgLight} 100%)`,
+    decoBg: `radial-gradient(circle at 80% 20%, rgba(${ar},${ag},${ab},0.55) 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(${ar},${ag},${ab},0.3) 0%, transparent 50%)`,
+    accentLight,
+    priceBg: `linear-gradient(135deg, ${accentDark}, ${accentColor})`,
+    tagBg: `rgba(${ar},${ag},${ab},0.18)`,
+    tagBorder: `rgba(${ar},${ag},${ab},0.35)`,
+    dividerBg: `linear-gradient(90deg, transparent, ${accentColor}, transparent)`,
+  };
+}
+
 export default function PostPreview({
   product,
   weight,
   tmpl,
+  customBgColor = "#2d1200",
+  customAccentColor = "#D97706",
   companyName,
   websiteUrl,
   tagline,
@@ -123,6 +167,9 @@ export default function PostPreview({
 
   const displayImage = bgRemovedUrl || selectedImageUrl;
 
+  // Compute custom color styles when in custom mode
+  const cc = tmpl === "custom" ? computeCustomColors(customBgColor, customAccentColor) : null;
+
   const caption = useMemo(
     () => generateCaption(product, price, weight, website, company, platform, captionTone),
     [product, price, weight, website, company, platform, captionTone]
@@ -145,8 +192,13 @@ export default function PostPreview({
       <div style={{ width: "100%", maxWidth: 540 }}>
         {/* Post Preview */}
         <div id="post-canvas-wrap" className={postFormat === "story" ? "format-story" : ""}>
-          <div id="post-canvas" className={`post-inner tmpl-${tmpl} animate-up`} key={`${product.id}-${tmpl}`}>
-            <div className="post-bg-deco" />
+          <div
+            id="post-canvas"
+            className={`post-inner tmpl-${tmpl} animate-up`}
+            key={`${product.id}-${tmpl}`}
+            style={cc ? { background: cc.canvasBg } : undefined}
+          >
+            <div className="post-bg-deco" style={cc ? { background: cc.decoBg } : undefined} />
             <div className="post-geo" />
             <div className="post-shimmer" />
 
@@ -200,7 +252,10 @@ export default function PostPreview({
                   </div>
                 )}
               </div>
-              <div className="post-category-badge post-tag">
+              <div
+                className="post-category-badge post-tag"
+                style={cc ? { background: cc.tagBg, color: cc.accentLight, borderColor: cc.tagBorder } : undefined}
+              >
                 {product.category}
               </div>
             </div>
@@ -234,7 +289,7 @@ export default function PostPreview({
 
             {/* Info */}
             <div className="post-info">
-              <div className="post-divider" />
+              <div className="post-divider" style={cc ? { background: cc.dividerBg } : undefined} />
 
               {showNutrition && (
                 <div className="post-nutrition-strip">
@@ -302,7 +357,9 @@ export default function PostPreview({
               {showBenefits && product.benefits && (
                 <div className="post-benefits-row">
                   {product.benefits.slice(0, 3).map((b, i) => (
-                    <span key={i} className="post-benefit-tag post-tag">
+                    <span key={i} className="post-benefit-tag post-tag"
+                      style={cc ? { background: cc.tagBg, color: cc.accentLight, borderColor: cc.tagBorder } : undefined}
+                    >
                       {b}
                     </span>
                   ))}
@@ -327,7 +384,9 @@ export default function PostPreview({
                   </div>
                   {showOldPrice && saving > 0 && (
                     <div style={{ marginTop: 4 }}>
-                      <span className="post-save-chip post-price-bg">
+                      <span className="post-save-chip post-price-bg"
+                        style={cc ? { background: cc.priceBg } : undefined}
+                      >
                         SAVE Rs.{saving}
                       </span>
                     </div>
