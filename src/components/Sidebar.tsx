@@ -14,13 +14,22 @@ const tmplStyles: Record<number, { bg: string; letter: string }> = {
   5: { bg: "linear-gradient(135deg,#001a1a,#14B8A6)", letter: "T" },
 };
 
-const tmplTitles = [
-  "",
-  "Golden Harvest",
-  "Forest Fresh",
-  "Sunset Spice",
-  "Midnight Luxury",
-  "Tropical Burst",
+const tmplTitles: Record<number | string, string> = {
+  1: "Golden Harvest",
+  2: "Forest Fresh",
+  3: "Sunset Spice",
+  4: "Midnight Luxury",
+  5: "Tropical Burst",
+  custom: "Custom",
+};
+
+const QUICK_PRESETS = [
+  { bg: "#2d1200", accent: "#D97706", label: "Amber" },
+  { bg: "#0a2014", accent: "#22C55E", label: "Green" },
+  { bg: "#1a0030", accent: "#A855F7", label: "Purple" },
+  { bg: "#001830", accent: "#3B82F6", label: "Blue" },
+  { bg: "#200010", accent: "#EC4899", label: "Pink" },
+  { bg: "#181800", accent: "#EAB308", label: "Yellow" },
 ];
 
 interface SidebarProps {
@@ -30,9 +39,13 @@ interface SidebarProps {
   weight: string;
   onSelectWeight: (w: string) => void;
   availableWeights: string[];
-  tmpl: number;
-  onSelectTmpl: (t: number) => void;
-  tmplNames: string[];
+  tmpl: number | "custom";
+  onSelectTmpl: (t: number | "custom") => void;
+  tmplNames: Record<number | string, string>;
+  customBgColor: string;
+  onCustomBgColorChange: (v: string) => void;
+  customAccentColor: string;
+  onCustomAccentColorChange: (v: string) => void;
   companyName: string;
   onCompanyNameChange: (v: string) => void;
   websiteUrl: string;
@@ -74,6 +87,10 @@ export default function Sidebar({
   availableWeights,
   tmpl,
   onSelectTmpl,
+  customBgColor,
+  onCustomBgColorChange,
+  customAccentColor,
+  onCustomAccentColorChange,
   companyName,
   onCompanyNameChange,
   websiteUrl,
@@ -265,6 +282,34 @@ export default function Sidebar({
               </span>
             </div>
           ))}
+          {/* Custom color button */}
+          <div
+            className={`tmpl-btn${tmpl === "custom" ? " active" : ""}`}
+            title="Custom Color"
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              background: "conic-gradient(from 0deg,#D97706,#22C55E,#14B8A6,#A855F7,#F97316,#D97706)",
+              border: tmpl === "custom" ? "2px solid #fff" : "2px dashed rgba(255,255,255,0.35)",
+            }}
+            onClick={() => onSelectTmpl("custom")}
+          >
+            <span
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 18,
+                lineHeight: 1,
+                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.8))",
+                pointerEvents: "none",
+              }}
+            >
+              🎨
+            </span>
+          </div>
         </div>
         <div
           style={{
@@ -273,8 +318,91 @@ export default function Sidebar({
             color: "rgba(255,255,255,0.3)",
           }}
         >
-          {tmplTitles[tmpl]}
+          {tmplTitles[tmpl] ?? ""}
         </div>
+
+        {/* Custom color picker panel */}
+        {tmpl === "custom" && (
+          <div
+            style={{
+              marginTop: 10,
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: 8,
+              padding: "12px 10px",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                color: "rgba(255,255,255,0.4)",
+                letterSpacing: "0.08em",
+                marginBottom: 10,
+                textTransform: "uppercase",
+              }}
+            >
+              Customize Colors
+            </div>
+            <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+              {/* Background color */}
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                <div
+                  className="color-swatch-btn"
+                  title="Background Color"
+                  style={{ background: customBgColor }}
+                >
+                  <input
+                    type="color"
+                    value={customBgColor}
+                    onChange={(e) => onCustomBgColorChange(e.target.value)}
+                  />
+                </div>
+                <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", letterSpacing: "0.04em" }}>
+                  BACKGROUND
+                </div>
+              </div>
+              {/* Accent color */}
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                <div
+                  className="color-swatch-btn"
+                  title="Accent Color"
+                  style={{ background: customAccentColor }}
+                >
+                  <input
+                    type="color"
+                    value={customAccentColor}
+                    onChange={(e) => onCustomAccentColorChange(e.target.value)}
+                  />
+                </div>
+                <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", letterSpacing: "0.04em" }}>
+                  ACCENT
+                </div>
+              </div>
+              {/* Quick preset swatches */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", letterSpacing: "0.04em", marginBottom: 2 }}>
+                  QUICK PICKS
+                </div>
+                <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                  {QUICK_PRESETS.map((preset) => (
+                    <div
+                      key={preset.label}
+                      className="custom-preset-swatch"
+                      title={preset.label}
+                      style={{
+                        background: `linear-gradient(135deg,${preset.bg},${preset.accent})`,
+                      }}
+                      onClick={() => {
+                        onCustomBgColorChange(preset.bg);
+                        onCustomAccentColorChange(preset.accent);
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Post Format */}
