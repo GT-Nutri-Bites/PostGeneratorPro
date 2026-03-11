@@ -182,35 +182,6 @@
   .tmpl-5 .post-footer { background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent); }
   .tmpl-5 .qr-wrap { background: #fff; }
 
-  /* — Template Custom: CUSTOM COLOR — */
-  .tmpl-custom { background: #1a1a1a; /* overridden by JS inline style */ }
-  .tmpl-custom .post-footer { background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent); }
-  .tmpl-custom .qr-wrap { background: #fff; }
-
-  /* Custom color picker panel */
-  .color-swatch-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
-    border: 2px solid rgba(255,255,255,0.15);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
-    transition: border-color 0.15s, transform 0.15s;
-  }
-  .color-swatch-btn:hover { border-color: rgba(255,255,255,0.5); transform: scale(1.08); }
-  .color-swatch-btn input[type="color"] {
-    position: absolute;
-    inset: -4px;
-    width: calc(100% + 8px);
-    height: calc(100% + 8px);
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    opacity: 0;
-  }
-
   /* ======= Post interior layout ======= */
   .post-inner {
     width: 100%;
@@ -702,44 +673,8 @@
         <div class="tmpl-btn" data-tmpl="5" title="Tropical Burst" style="background:linear-gradient(135deg,#001a1a,#14B8A6)">
           <span style="position:absolute;bottom:2px;right:2px;font-size:7px;color:rgba(255,255,255,0.7);font-weight:600">T</span>
         </div>
-        <div class="tmpl-btn" data-tmpl="custom" id="tmplCustomBtn" title="Custom Color" style="position:relative;overflow:hidden;background:conic-gradient(from 0deg,#D97706,#22C55E,#14B8A6,#A855F7,#F97316,#D97706);border:2px dashed rgba(255,255,255,0.35)">
-          <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.8));pointer-events:none">🎨</span>
-        </div>
       </div>
       <div style="margin-top:6px;font-size:10px;color:rgba(255,255,255,0.3)" id="tmplName">Golden Harvest</div>
-
-      <!-- Custom color picker panel (shown only when Custom template is selected) -->
-      <div id="customColorPanel" style="display:none;margin-top:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 10px">
-        <div style="font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;margin-bottom:10px;text-transform:uppercase">Customize Colors</div>
-        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-          <!-- Background color -->
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-            <div class="color-swatch-btn" id="bgSwatchBtn" title="Background Color" style="background:#2d1200">
-              <input type="color" id="customBgColor" value="#2d1200">
-            </div>
-            <div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.04em">BACKGROUND</div>
-          </div>
-          <!-- Accent color -->
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-            <div class="color-swatch-btn" id="accentSwatchBtn" title="Accent Color" style="background:#D97706">
-              <input type="color" id="customAccentColor" value="#D97706">
-            </div>
-            <div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.04em">ACCENT</div>
-          </div>
-          <!-- Quick preset swatches for custom mode -->
-          <div style="display:flex;flex-direction:column;gap:4px">
-            <div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.04em;margin-bottom:2px">QUICK PICKS</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap">
-              <div class="custom-preset-swatch" data-bg="#2d1200" data-accent="#D97706" title="Amber" style="background:linear-gradient(135deg,#2d1200,#D97706)"></div>
-              <div class="custom-preset-swatch" data-bg="#0a2014" data-accent="#22C55E" title="Green" style="background:linear-gradient(135deg,#0a2014,#22C55E)"></div>
-              <div class="custom-preset-swatch" data-bg="#1a0030" data-accent="#A855F7" title="Purple" style="background:linear-gradient(135deg,#1a0030,#A855F7)"></div>
-              <div class="custom-preset-swatch" data-bg="#001830" data-accent="#3B82F6" title="Blue" style="background:linear-gradient(135deg,#001830,#3B82F6)"></div>
-              <div class="custom-preset-swatch" data-bg="#200010" data-accent="#EC4899" title="Pink" style="background:linear-gradient(135deg,#200010,#EC4899)"></div>
-              <div class="custom-preset-swatch" data-bg="#181800" data-accent="#EAB308" title="Yellow" style="background:linear-gradient(135deg,#181800,#EAB308)"></div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Weight -->
@@ -825,15 +760,13 @@
 // ===========================
 const data = {"heroImage":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990983/All_Nuts_and_Seeds-1_z4zzpj.webp","weightOptions":["100g","250g","500g","750g","1kg"],"products":[{"id":1,"name":"Premium California Almonds","category":"Organic Almonds","type":"nuts","price":440,"oldPrice":500,"weight":"100g","weightVariants":{"100g":{"price":440,"oldPrice":500},"250g":{"price":1080,"oldPrice":1230},"500g":{"price":2150,"oldPrice":2450},"750g":{"price":3200,"oldPrice":3650},"1kg":{"price":4260,"oldPrice":4860}},"badge":"BEST SELLER","badgeColor":"bg-green-700","description":"Raw, unsalted, and packed with nutrients","fullDescription":"Our Premium California Almonds are sourced directly from sustainable farms in California. These raw, unsalted almonds are carefully selected for their superior quality and freshness.","benefits":["High in Vitamin E","Rich in healthy fats","Good source of protein","Contains magnesium and fiber"],"nutrition":{"calories":"607 per 100g","protein":"18.45g","fat":"58.51g","carbs":"2.66g","fiber":"13.07g"},"image":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990975/Almond-1_ef2fsx.webp","images":["https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990975/Almond-1_ef2fsx.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990971/Almond-2_eoj8sl.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990973/Almond-3_mqe4kz.webp"],"emoji":"🥜","useEmoji":false,"packagingType":"zipLockBag"},{"id":2,"name":"Premium Pistachios","category":"Organic Nuts","type":"nuts","price":680,"oldPrice":740,"weight":"100g","weightVariants":{"100g":{"price":680,"oldPrice":740},"250g":{"price":1680,"oldPrice":1830},"500g":{"price":3350,"oldPrice":3650},"750g":{"price":5000,"oldPrice":5450},"1kg":{"price":6660,"oldPrice":7260}},"badge":"PREMIUM","badgeColor":"bg-green-700","description":"Rich, flavorful & naturally nutritious","fullDescription":"Our Premium Pistachios are carefully sourced and selected for their superior quality.","benefits":["High in protein and fiber","Rich in antioxidants","Supports heart health","Good source of vitamin B6"],"nutrition":{"calories":"541 per 100g","protein":"23.64g","fat":"42.95g","carbs":"15.06g","fiber":"10.45g"},"image":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990953/Pistachio-1_f129ja.webp","images":["https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990953/Pistachio-1_f129ja.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990951/Pistachio-2_nut35f.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990951/Pistachio-3_xcn1kf.webp"],"emoji":"🥜","useEmoji":false,"packagingType":"zipLockBag"},{"id":5,"name":"Sunflower Seeds (Without Shell)","category":"Premium Seeds","type":"seeds","price":410,"oldPrice":500,"weight":"100g","weightVariants":{"100g":{"price":410,"oldPrice":500},"250g":{"price":1010,"oldPrice":1230},"500g":{"price":2000,"oldPrice":2450},"750g":{"price":2980,"oldPrice":3650},"1kg":{"price":3960,"oldPrice":4860}},"badge":null,"badgeColor":null,"description":"Roasted & lightly salted","fullDescription":"Our premium sunflower seeds are lightly roasted and salted to perfection.","benefits":["High in Vitamin E","Rich in selenium","Anti-inflammatory properties","Supports immune health"],"nutrition":{"calories":"584 per 100g","protein":"23.53g","fat":"42.95g","carbs":"6.85g","fiber":"10.8g"},"image":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990949/Sunflower_Seeds-1_jow1jp.webp","images":["https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990949/Sunflower_Seeds-1_jow1jp.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990947/Sunflower_Seeds-2_nk4wm7.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990947/Sunflower_Seeds-3_o3fv5d.webp"],"emoji":"🌻","useEmoji":false},{"id":6,"name":"Sunflower Seeds (With Shell)","category":"Premium Seeds","type":"seeds","price":410,"oldPrice":500,"weight":"100g","weightVariants":{"100g":{"price":410,"oldPrice":500},"250g":{"price":1010,"oldPrice":1230},"500g":{"price":2000,"oldPrice":2450},"750g":{"price":2980,"oldPrice":3650},"1kg":{"price":3960,"oldPrice":4860}},"badge":null,"badgeColor":null,"description":"Crunchy & naturally wholesome with shell","fullDescription":"Our premium sunflower seeds with shell offer a satisfying crunch.","benefits":["High in Vitamin E","Rich in selenium","Natural source of healthy fats","Fun and satisfying to eat"],"nutrition":{"calories":"584 per 100g","protein":"23.53g","fat":"42.95g","carbs":"6.85g","fiber":"10.8g"},"image":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990970/Sunflower_Seeds_With_Shell_-1_vnslyp.webp","images":["https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990970/Sunflower_Seeds_With_Shell_-1_vnslyp.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990948/Sunflower_Seeds_With_Shell_-2_jry7it.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990977/Sunflower_Seeds_With_Shell_-3_znsjvy.webp"],"emoji":"🌻","useEmoji":false,"packagingType":"zipLockBag"},{"id":7,"name":"Pumpkin Seeds","category":"Superfood Seeds","type":"seeds","price":410,"oldPrice":500,"weight":"100g","weightVariants":{"100g":{"price":410,"oldPrice":500},"250g":{"price":1010,"oldPrice":1230},"500g":{"price":2000,"oldPrice":2450},"750g":{"price":2980,"oldPrice":3650},"1kg":{"price":3960,"oldPrice":4860}},"badge":null,"badgeColor":null,"description":"High in zinc & magnesium","fullDescription":"Our premium pumpkin seeds are a nutritional powerhouse.","benefits":["High in zinc and magnesium","Supports prostate health","Rich in antioxidants","May improve sleep quality"],"nutrition":{"calories":"559 per 100g","protein":"30.2g","fat":"49.1g","carbs":"10.7g","fiber":"6g"},"image":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990954/Pumpkin_Seeds-1_kah37m.webp","images":["https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990954/Pumpkin_Seeds-1_kah37m.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990948/Pumpkin_Seeds-2_kb8qcm.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990948/Pumpkin_Seeds-3_gvwqhx.webp"],"emoji":"🎃","useEmoji":false},{"id":8,"name":"Mix Nuts, Seeds & Dried Fruits","category":"Premium Mix","type":"mix","price":560,"oldPrice":620,"weight":"100g","weightVariants":{"100g":{"price":560,"oldPrice":620},"250g":{"price":1380,"oldPrice":1530},"500g":{"price":2750,"oldPrice":3050},"750g":{"price":4100,"oldPrice":4550},"1kg":{"price":5460,"oldPrice":6060}},"badge":"ORGANIC","badgeColor":"bg-green-600","description":"Almonds, cashews & pistachios","fullDescription":"Our Deluxe Nut Mix features a premium blend of organic almonds, cashews, and pistachios.","benefits":["Variety of nutrients","Premium organic quality","Heart-healthy fats","Perfect for entertaining"],"nutrition":{"calories":"500 per 100g","protein":"15g","fat":"25g","carbs":"55g","fiber":"12.3g"},"image":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Mixed_Nuts_and_Seeds-1_hwjitv.webp","images":["https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Mixed_Nuts_and_Seeds-1_hwjitv.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990956/Mixed_Nuts_and_Seeds-_peqtzh.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990953/Mixed_Nuts_and_Seeds-3_mbkydj.webp"],"emoji":"🥗","useEmoji":false,"packagingType":"zipLockBag"},{"id":9,"name":"Black Raisins","category":"Dried Fruits","type":"dried_fruits","price":500,"oldPrice":560,"weight":"100g","weightVariants":{"100g":{"price":500,"oldPrice":560},"250g":{"price":1230,"oldPrice":1380},"500g":{"price":2450,"oldPrice":2750},"750g":{"price":3650,"oldPrice":4100},"1kg":{"price":4860,"oldPrice":5460}},"badge":"NEW","badgeColor":"bg-amber-500","description":"Sweet, juicy & packed with iron","fullDescription":"Our premium Black Raisins are naturally dried to preserve their rich, sweet flavor.","benefits":["Rich in iron","High in antioxidants","Natural source of energy","Supports digestive health"],"nutrition":{"calories":"308 per 100g","protein":"2.65g","fat":"0.37g","carbs":"71.83g","fiber":"3.85g"},"image":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990966/Black_Rasins-1_chupha.webp","images":["https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990966/Black_Rasins-1_chupha.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990985/Black_Rasins-2_csvk7b.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990972/Black_Rasins-3_xgx67u.webp"],"emoji":"🍇","useEmoji":false,"packagingType":"zipLockBag"},{"id":11,"name":"Premium Dried Fruits","category":"Dried Fruits","type":"dried_fruits","price":620,"oldPrice":680,"weight":"100g","weightVariants":{"100g":{"price":620,"oldPrice":680},"250g":{"price":1530,"oldPrice":1680},"500g":{"price":3050,"oldPrice":3350},"750g":{"price":4550,"oldPrice":5000},"1kg":{"price":6060,"oldPrice":6660}},"badge":"NEW","badgeColor":"bg-amber-500","description":"A wholesome mix of nature's finest dried fruits","fullDescription":"Our Premium Dried Fruits collection features a carefully curated selection of the finest dried fruits.","benefits":["Rich in natural vitamins","High in dietary fiber","Excellent source of energy","Packed with essential minerals"],"nutrition":{"calories":"340 per 100g","protein":"3.5g","fat":"1g","carbs":"85g","fiber":"3.5g"},"image":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990959/Dried_Fruits-1_tgur8j.webp","images":["https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990959/Dried_Fruits-1_tgur8j.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990958/Dried_Fruits-2_tm5vi6.webp","https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990963/Dried_Fruits-3_utrojm.webp"],"emoji":"🍎","useEmoji":false,"packagingType":"zipLockBag"},{"id":12,"name":"Golden Raisins","category":"Dried Fruits","type":"dried_fruits","price":620,"oldPrice":680,"weight":"100g","weightVariants":{"100g":{"price":620,"oldPrice":680},"250g":{"price":1530,"oldPrice":1680},"500g":{"price":3050,"oldPrice":3350},"750g":{"price":4550,"oldPrice":5000},"1kg":{"price":6060,"oldPrice":6660}},"badge":"NEW","badgeColor":"bg-amber-500","description":"Light, sweet & naturally golden","fullDescription":"Our Golden Raisins are naturally sun-dried to achieve their beautiful golden color.","benefits":["Rich in antioxidants","Good source of potassium","Natural energy booster","Supports bone health"],"nutrition":{"calories":"294 per 100g","protein":"2.54g","fat":"0.32g","carbs":"68.74g","fiber":"4.36g"},"image":"https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Golden_Rasins-1_qlg2mk.webp","images":["https://res.cloudinary.com/dkj22lm1g/image/upload/v1772990957/Golden_Rasins-1_qlg2mk.webp"],"emoji":"🍇","useEmoji":false,"packagingType":"zipLockBag"}]};
 
-const tmplNames = {1:'Golden Harvest',2:'Forest Fresh',3:'Sunset Spice',4:'Midnight Luxury',5:'Tropical Burst','custom':'Custom'};
+const tmplNames = ['','Golden Harvest','Forest Fresh','Sunset Spice','Midnight Luxury','Tropical Burst'];
 
 let state = {
   product: data.products[0],
   weight: '100g',
   tmpl: 1,
   qrDataUrl: '',
-  customBgColor: '#2d1200',
-  customAccentColor: '#D97706',
 };
 
 // Format nutrition value: separate number from unit so "g" renders in a regular font (not Bebas Neue which is all-caps)
@@ -844,69 +777,6 @@ function formatNutVal(val) {
     return `${match[1]}<span class="post-nut-unit">${match[2]}</span>`;
   }
   return val;
-}
-
-// ===========================
-// CUSTOM COLOR HELPERS
-// ===========================
-function hexToRgb(hex) {
-  const h = hex.replace('#','');
-  return {
-    r: parseInt(h.slice(0,2),16),
-    g: parseInt(h.slice(2,4),16),
-    b: parseInt(h.slice(4,6),16)
-  };
-}
-
-function shadeHex(hex, factor) {
-  const {r,g,b} = hexToRgb(hex);
-  const clamp = v => Math.max(0, Math.min(255, Math.round(v)));
-  return '#' + [clamp(r*factor), clamp(g*factor), clamp(b*factor)]
-    .map(v => v.toString(16).padStart(2,'0')).join('');
-}
-
-function applyCustomColors() {
-  if (state.tmpl !== 'custom') return;
-  const canvas = document.getElementById('post-canvas');
-  const bg = state.customBgColor;
-  const accent = state.customAccentColor;
-  const {r:ar, g:ag, b:ab} = hexToRgb(accent);
-  const bgDark  = shadeHex(bg, 0.55);
-  const bgLight = shadeHex(bg, 1.5);
-  const accentLight = shadeHex(accent, 1.65);
-  const accentDark  = shadeHex(accent, 0.75);
-
-  // Main background gradient
-  canvas.style.background = `linear-gradient(145deg, ${bgDark} 0%, ${bg} 40%, ${bgLight} 100%)`;
-
-  // Decorative radial glow
-  const deco = canvas.querySelector('.post-bg-deco');
-  if (deco) {
-    deco.style.background =
-      `radial-gradient(circle at 80% 20%, rgba(${ar},${ag},${ab},0.55) 0%, transparent 60%),` +
-      `radial-gradient(circle at 20% 80%, rgba(${ar},${ag},${ab},0.3) 0%, transparent 50%)`;
-  }
-
-  // Accent text
-  canvas.querySelectorAll('.post-accent').forEach(el => { el.style.color = accentLight; });
-
-  // Price / save badge background
-  canvas.querySelectorAll('.post-price-bg').forEach(el => {
-    el.style.background = `linear-gradient(135deg, ${accentDark}, ${accent})`;
-  });
-
-  // Tags (category badge + benefit tags)
-  canvas.querySelectorAll('.post-tag').forEach(el => {
-    el.style.background = `rgba(${ar},${ag},${ab},0.18)`;
-    el.style.color = accentLight;
-    el.style.borderColor = `rgba(${ar},${ag},${ab},0.35)`;
-  });
-
-  // Horizontal divider line
-  const divider = canvas.querySelector('.post-divider');
-  if (divider) {
-    divider.style.background = `linear-gradient(90deg, transparent, ${accent}, transparent)`;
-  }
 }
 
 // ===========================
@@ -1065,7 +935,6 @@ async function renderPost() {
 
   const canvas = document.getElementById('post-canvas');
   canvas.className = `post-inner tmpl-${tmpl} animate-up`;
-  canvas.style.background = ''; // clear any previously applied custom inline background
 
   canvas.innerHTML = `
     <div class="post-bg-deco"></div>
@@ -1208,7 +1077,6 @@ async function renderAll() {
   });
   buildWeightPills();
   await renderPost();
-  applyCustomColors();
 }
 
 // Convert an image URL to a data-URI to sidestep CORS during html2canvas export
@@ -1385,40 +1253,9 @@ document.querySelectorAll('.tmpl-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tmpl-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const raw = btn.dataset.tmpl;
-    state.tmpl = raw === 'custom' ? 'custom' : parseInt(raw);
-    document.getElementById('tmplName').textContent = tmplNames[state.tmpl] || '';
-    document.getElementById('customColorPanel').style.display = state.tmpl === 'custom' ? 'block' : 'none';
+    state.tmpl = parseInt(btn.dataset.tmpl);
+    document.getElementById('tmplName').textContent = tmplNames[state.tmpl];
     renderAll();
-  });
-});
-
-// ===========================
-// CUSTOM COLOR INPUTS
-// ===========================
-document.getElementById('customBgColor').addEventListener('input', function() {
-  state.customBgColor = this.value;
-  document.getElementById('bgSwatchBtn').style.background = this.value;
-  applyCustomColors();
-});
-document.getElementById('customAccentColor').addEventListener('input', function() {
-  state.customAccentColor = this.value;
-  document.getElementById('accentSwatchBtn').style.background = this.value;
-  applyCustomColors();
-});
-
-// Quick preset swatches for custom mode
-document.querySelectorAll('.custom-preset-swatch').forEach(swatch => {
-  swatch.addEventListener('click', () => {
-    const bg = swatch.dataset.bg;
-    const accent = swatch.dataset.accent;
-    state.customBgColor = bg;
-    state.customAccentColor = accent;
-    document.getElementById('customBgColor').value = bg;
-    document.getElementById('customAccentColor').value = accent;
-    document.getElementById('bgSwatchBtn').style.background = bg;
-    document.getElementById('accentSwatchBtn').style.background = accent;
-    applyCustomColors();
   });
 });
 

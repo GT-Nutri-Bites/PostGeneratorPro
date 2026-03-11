@@ -25,9 +25,7 @@ function formatNutVal(val: string): string {
 interface PostPreviewProps {
   product: Product;
   weight: string;
-  tmpl: number | "custom";
-  customBgColor?: string;
-  customAccentColor?: string;
+  tmpl: number;
   companyName: string;
   websiteUrl: string;
   tagline: string;
@@ -43,34 +41,10 @@ interface PostPreviewProps {
   captionTone: string;
 }
 
-// Helper: convert hex color to {r,g,b}
-function hexToRgb(hex: string): { r: number; g: number; b: number } {
-  const h = hex.replace("#", "");
-  return {
-    r: parseInt(h.slice(0, 2), 16),
-    g: parseInt(h.slice(2, 4), 16),
-    b: parseInt(h.slice(4, 6), 16),
-  };
-}
-
-// Helper: shade a hex color by a factor (< 1 darkens, > 1 lightens)
-function shadeHex(hex: string, factor: number): string {
-  const { r, g, b } = hexToRgb(hex);
-  const clamp = (v: number) => Math.max(0, Math.min(255, Math.round(v)));
-  return (
-    "#" +
-    [clamp(r * factor), clamp(g * factor), clamp(b * factor)]
-      .map((v) => v.toString(16).padStart(2, "0"))
-      .join("")
-  );
-}
-
 export default function PostPreview({
   product,
   weight,
   tmpl,
-  customBgColor = "#2d1200",
-  customAccentColor = "#D97706",
   companyName,
   websiteUrl,
   tagline,
@@ -149,25 +123,6 @@ export default function PostPreview({
 
   const displayImage = bgRemovedUrl || selectedImageUrl;
 
-  // Compute CSS custom property values for tmpl-custom
-  const customCssVars: React.CSSProperties = {};
-  if (tmpl === "custom") {
-    const { r: ar, g: ag, b: ab } = hexToRgb(customAccentColor);
-    const bgDark = shadeHex(customBgColor, 0.55);
-    const bgLight = shadeHex(customBgColor, 1.5);
-    const accentLight = shadeHex(customAccentColor, 1.65);
-    const accentDark = shadeHex(customAccentColor, 0.75);
-    Object.assign(customCssVars, {
-      "--custom-bg": `linear-gradient(145deg, ${bgDark} 0%, ${customBgColor} 40%, ${bgLight} 100%)`,
-      "--custom-deco-bg": `radial-gradient(circle at 80% 20%, rgba(${ar},${ag},${ab},0.55) 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(${ar},${ag},${ab},0.3) 0%, transparent 50%)`,
-      "--custom-accent-light": accentLight,
-      "--custom-price-bg": `linear-gradient(135deg, ${accentDark}, ${customAccentColor})`,
-      "--custom-tag-bg": `rgba(${ar},${ag},${ab},0.18)`,
-      "--custom-tag-border": `rgba(${ar},${ag},${ab},0.35)`,
-      "--custom-divider-bg": `linear-gradient(90deg, transparent, ${customAccentColor}, transparent)`,
-    } as React.CSSProperties);
-  }
-
   const caption = useMemo(
     () => generateCaption(product, price, weight, website, company, platform, captionTone),
     [product, price, weight, website, company, platform, captionTone]
@@ -190,12 +145,7 @@ export default function PostPreview({
       <div style={{ width: "100%", maxWidth: 540 }}>
         {/* Post Preview */}
         <div id="post-canvas-wrap" className={postFormat === "story" ? "format-story" : ""}>
-          <div
-            id="post-canvas"
-            className={`post-inner tmpl-${tmpl} animate-up`}
-            key={`${product.id}-${tmpl}`}
-            style={customCssVars}
-          >
+          <div id="post-canvas" className={`post-inner tmpl-${tmpl} animate-up`} key={`${product.id}-${tmpl}`}>
             <div className="post-bg-deco" />
             <div className="post-geo" />
             <div className="post-shimmer" />

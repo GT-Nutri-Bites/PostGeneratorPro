@@ -12,21 +12,19 @@ import Toast from "@/components/Toast";
 
 const data = productsJson as ProductData;
 
-const tmplNames: Record<number | string, string> = {
-  1: "Golden Harvest",
-  2: "Forest Fresh",
-  3: "Sunset Spice",
-  4: "Midnight Luxury",
-  5: "Tropical Burst",
-  custom: "Custom",
-};
+const tmplNames = [
+  "",
+  "Golden Harvest",
+  "Forest Fresh",
+  "Sunset Spice",
+  "Midnight Luxury",
+  "Tropical Burst",
+];
 
 export default function Home() {
   const [product, setProduct] = useState<Product>(data.products[0]);
   const [weight, setWeight] = useState("100g");
-  const [tmpl, setTmpl] = useState<number | "custom">(1);
-  const [customBgColor, setCustomBgColor] = useState("#2d1200");
-  const [customAccentColor, setCustomAccentColor] = useState("#D97706");
+  const [tmpl, setTmpl] = useState(1);
   const [companyName, setCompanyName] = useState("GT Nutri Bites");
   const [websiteUrl, setWebsiteUrl] = useState("gt-nutri-bites.github.io");
   const [tagline, setTagline] = useState("Fresh. Nutritious. Delicious.");
@@ -94,10 +92,6 @@ export default function Home() {
           tmpl={tmpl}
           onSelectTmpl={setTmpl}
           tmplNames={tmplNames}
-          customBgColor={customBgColor}
-          onCustomBgColorChange={setCustomBgColor}
-          customAccentColor={customAccentColor}
-          onCustomAccentColorChange={setCustomAccentColor}
           companyName={companyName}
           onCompanyNameChange={setCompanyName}
           websiteUrl={websiteUrl}
@@ -134,8 +128,6 @@ export default function Home() {
           product={product}
           weight={weight}
           tmpl={tmpl}
-          customBgColor={customBgColor}
-          customAccentColor={customAccentColor}
           companyName={companyName}
           websiteUrl={websiteUrl}
           tagline={tagline}
