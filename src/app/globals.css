@@ -179,13 +179,8 @@ body::before {
 .tmpl-5 .post-footer { background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent); }
 .tmpl-5 .qr-wrap { background: #fff; }
 
-/* — Template Custom: CUSTOM COLOR — */
-.tmpl-custom { background: var(--custom-bg, #1a1a1a); }
-.tmpl-custom .post-bg-deco { background: var(--custom-deco-bg, radial-gradient(circle at 80% 20%, rgba(217,119,6,0.55) 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(217,119,6,0.3) 0%, transparent 50%)); }
-.tmpl-custom .post-accent { color: var(--custom-accent-light, #FDE68A); }
-.tmpl-custom .post-price-bg { background: var(--custom-price-bg, linear-gradient(135deg, #D97706, #F59E0B)); }
-.tmpl-custom .post-tag { background: var(--custom-tag-bg, rgba(253,230,138,0.2)); color: var(--custom-accent-light, #FDE68A); border: 1px solid var(--custom-tag-border, rgba(253,230,138,0.4)); }
-.tmpl-custom .post-divider { background: var(--custom-divider-bg, linear-gradient(90deg, transparent, #D97706, transparent)); }
+/* — Template Custom: CUSTOM COLOR (inline styles from JS, CSS fallbacks here) — */
+.tmpl-custom { background: #1a1a1a; }
 .tmpl-custom .post-footer { background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent); }
 .tmpl-custom .qr-wrap { background: #fff; }
 
@@ -221,6 +216,8 @@ body::before {
   transition: transform 0.15s, border-color 0.15s;
 }
 .custom-preset-swatch:hover { transform: scale(1.2); border-color: rgba(255,255,255,0.6); }
+
+/* ======= Post interior layout — CSS Grid ======= */
 .post-inner {
   width: 100%;
   height: 100%;

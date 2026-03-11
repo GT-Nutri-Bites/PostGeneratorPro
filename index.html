@@ -182,8 +182,8 @@
   .tmpl-5 .post-footer { background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent); }
   .tmpl-5 .qr-wrap { background: #fff; }
 
-  /* — Template Custom: CUSTOM COLOR — */
-  .tmpl-custom { background: #1a1a1a; /* overridden by JS inline style */ }
+  /* — Template Custom: CUSTOM COLOR (inline styles from JS, CSS fallbacks here) — */
+  .tmpl-custom { background: #1a1a1a; }
   .tmpl-custom .post-footer { background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent); }
   .tmpl-custom .qr-wrap { background: #fff; }
 
@@ -210,6 +210,15 @@
     cursor: pointer;
     opacity: 0;
   }
+  .custom-preset-swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .custom-preset-swatch:hover { transform: scale(1.2); border-color: rgba(255,255,255,0.6); }
 
   /* ======= Post interior layout ======= */
   .post-inner {
@@ -851,10 +860,13 @@ function formatNutVal(val) {
 // ===========================
 function hexToRgb(hex) {
   const h = hex.replace('#','');
+  const r = parseInt(h.slice(0,2),16);
+  const g = parseInt(h.slice(2,4),16);
+  const b = parseInt(h.slice(4,6),16);
   return {
-    r: parseInt(h.slice(0,2),16),
-    g: parseInt(h.slice(2,4),16),
-    b: parseInt(h.slice(4,6),16)
+    r: isNaN(r) ? 0 : r,
+    g: isNaN(g) ? 0 : g,
+    b: isNaN(b) ? 0 : b
   };
 }
 
@@ -868,6 +880,7 @@ function shadeHex(hex, factor) {
 function applyCustomColors() {
   if (state.tmpl !== 'custom') return;
   const canvas = document.getElementById('post-canvas');
+  if (!canvas) return;
   const bg = state.customBgColor;
   const accent = state.customAccentColor;
   const {r:ar, g:ag, b:ab} = hexToRgb(accent);
@@ -886,9 +899,6 @@ function applyCustomColors() {
       `radial-gradient(circle at 80% 20%, rgba(${ar},${ag},${ab},0.55) 0%, transparent 60%),` +
       `radial-gradient(circle at 20% 80%, rgba(${ar},${ag},${ab},0.3) 0%, transparent 50%)`;
   }
-
-  // Accent text
-  canvas.querySelectorAll('.post-accent').forEach(el => { el.style.color = accentLight; });
 
   // Price / save badge background
   canvas.querySelectorAll('.post-price-bg').forEach(el => {
