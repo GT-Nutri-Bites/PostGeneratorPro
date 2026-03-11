@@ -262,6 +262,7 @@ body::before {
   font-size: clamp(14px, 3vw, 24px);
   letter-spacing: 0.12em;
   color: rgba(255,255,255,0.95);
+  white-space: nowrap;
 }
 .post-category-badge {
   font-size: clamp(9px, 1.8vw, 12px);
